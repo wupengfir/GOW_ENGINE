@@ -10,7 +10,7 @@ package core.geometry.matrix
 		public var type:int;
 		public var rowNum:int;
 		public var columnNum:int;
-		public function GowMatrix(type:int,values:Vector.<Number>)
+		public function GowMatrix(type:int,values:Vector.<Number> = null)
 		{
 			rowNum = type/10;
 			columnNum = type%10;

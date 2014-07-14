@@ -81,7 +81,7 @@ package core.render
 			aspect_radio = viewW/viewH;
 			viewplane_width = 2;
 			viewplane_height = 2/aspect_radio;
-			var tan_fov = Math.tan(Util.deg_to_rad(fov/2));
+			var tan_fov:Number = Math.tan(Util.deg_to_rad(fov/2));
 			view_dist = 0.5*viewplane_width*tan_fov;
 			//右手坐标系
 			var p:Point3d = new Point3d(0,0,0);
