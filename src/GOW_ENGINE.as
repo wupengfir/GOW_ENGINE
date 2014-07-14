@@ -1,9 +1,9 @@
 package
 {
+	import core.geometry.matrix.GowMatrix;
+	
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
-	
-	import core.geometry.matrix.GowMatrix;
 	
 	[SWF( width = "950", height = "650", frameRate = "30", backgroundColor = "0x3366FF" )]
 	public class GOW_ENGINE extends Sprite
@@ -17,7 +17,7 @@ package
 			var m2:GowMatrix = new GowMatrix(23,ii([0,2,3,1,1,2]));
 			trace(m1.multiply(m2).values);
 			trace(0x0001+2)
-			trace(iiii)
+			trace(Math.tan(Math.PI/4))
 		}
 		
 		public function ii(arr:Array):Vector.<Number>{

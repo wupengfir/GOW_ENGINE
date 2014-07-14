@@ -14,12 +14,15 @@ package core.geometry.matrix
 		{
 			rowNum = type/10;
 			columnNum = type%10;
-			if(rowNum*columnNum!=values.length){
-				throw(new Error("matrix type or values is wrong"));
-			}
 			this.type = type;
-			this.values = values;
-
+			if(values){
+				if(rowNum*columnNum!=values.length){
+					throw(new Error("matrix type or values is wrong"));
+				}				
+				this.values = values;
+			}else{
+				values = new Vector.<Number>(rowNum*columnNum);
+			}			
 		}
 		
 		public function multiply(m:Object):Object{
@@ -54,7 +57,7 @@ package core.geometry.matrix
 				vec.push((m as Point4d).z);
 				vec.push((m as Point4d).w);
 				var ma:GowMatrix = new GowMatrix(14,vec);				
-				var result:GowMatrix =  ma.multiply(this);
+				var result:GowMatrix = ma.multiply(this) as GowMatrix;
 				return result;
 			}
 			if(m is Vector4d){
@@ -64,13 +67,26 @@ package core.geometry.matrix
 				vec.push((m as Vector4d).z);
 				vec.push((m as Vector4d).w);
 				var ma:GowMatrix = new GowMatrix(14,vec);				
-				var result:GowMatrix =  ma.multiply(this);
+				var result:GowMatrix =  ma.multiply(this) as GowMatrix;
 				return result;
 			}
 			return null;
 		}
 		
+		public function setZero():void{
+			for (var i:int = 0; i < rowNum*columnNum; i++) 
+			{
+				values[i] = 0;
+			}			
+		}
 		
+		public function identity():void{
+			setZero();
+			for (var i:int = 0; i < rowNum; i++) 
+			{
+				values[i*columnNum+i] = 1;
+			}			
+		}
 		
 	}
 }
