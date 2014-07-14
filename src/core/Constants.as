@@ -9,8 +9,7 @@ package core
 		public static const POLY4D_ATTR_TRANSPARENT:int = 0x0002;
 		public static const POLY4D_ATTR_8BITCOLOR:int = 0x0008;
 		public static const POLY4D_ATTR_RGB16:int = 0x0008;
-		public static const POLY4D_ATTR_RGB24:int = 0x0010;
-		
+		public static const POLY4D_ATTR_RGB24:int = 0x0010;		
 		public static const POLY4D_ATTR_SHADE_MODE_PURE:int = 0x0020;
 		public static const POLY4D_ATTR_SHADE_MODE_FLAT:int = 0x0040;
 		public static const POLY4D_ATTR_SHADE_MODE_GOURAUD:int = 0x0080;
@@ -20,6 +19,9 @@ package core
 		public static const POLY4D_STATE_CLIPPED:int = 0x0002;
 		public static const POLY4D_STATE_BACKFACE:int = 0x0004;
 		
+		public static const TRANSFORM_LOCAL_ONLY:int = 0;
+		public static const TRANSFORM_TRANS_ONLY:int = 1;
+		public static const TRANSFORM_LOCAL_TO_TRANS:int = 2;
 		public function Constants()
 		{
 		}

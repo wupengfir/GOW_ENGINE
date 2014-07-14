@@ -24,9 +24,45 @@ package core.geometry.object
 		//顶点局部坐标
 		public var vlist_local:Vector.<Point4d> = new Vector.<Point4d>(Constants.OBJECT4D_MAX_VERTICES,true);
 		//变换后的顶点坐标
-		public var tvlist_local:Vector.<Point4d> = new Vector.<Point4d>(Constants.OBJECT4D_MAX_VERTICES,true);
+		public var vlist_trans:Vector.<Point4d> = new Vector.<Point4d>(Constants.OBJECT4D_MAX_VERTICES,true);
 		public function Object4d()
 		{
 		}
+		
+		public function toWorldPosition(coord_select:int = Constants.TRANSFORM_LOCAL_TO_TRANS):void{
+			var temp:Point4d;
+			if(coord_select == Constants.TRANSFORM_LOCAL_TO_TRANS){				
+				for (var i:int = 0; i < numVertices; i++) 
+				{
+					temp = vlist_local[i];
+					temp.add(worldPosition,vlist_trans[i]);
+				}				
+			}
+			else if(coord_select == Constants.TRANSFORM_TRANS_ONLY){
+				for (var i:int = 0; i < numVertices; i++) 
+				{
+					temp = vlist_trans[i];
+					temp.add(worldPosition,temp);
+				}
+			}
+		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
