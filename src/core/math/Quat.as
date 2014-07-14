@@ -1,6 +1,6 @@
 package core.math
 {
-	public class Quat
+	public class Quat//四元数
 	{
 		public var q0:Number;
 		public var qv:Vecter3d;

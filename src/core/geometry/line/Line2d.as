@@ -1,4 +1,4 @@
-package core.geometry
+package core.geometry.line
 {
 	import core.math.Vector2d;
 	

@@ -10,11 +10,14 @@ package
 	{
 		private var i:Number = 5;
 		private var dic:Array = new Array();
+		private var iiii:int;
 		public function GOW_ENGINE()
 		{
 			var m1:GowMatrix = new GowMatrix(22,ii([1,1,2,0]));
 			var m2:GowMatrix = new GowMatrix(23,ii([0,2,3,1,1,2]));
-			trace(m1.multiply(m2).values)
+			trace(m1.multiply(m2).values);
+			trace(0x0001+2)
+			trace(iiii)
 		}
 		
 		public function ii(arr:Array):Vector.<Number>{
