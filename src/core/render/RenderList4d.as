@@ -15,6 +15,20 @@ package core.render
 		{
 		}
 		
+		public function addPoly(poly:Object):void{
+			if(poly is Poly4df){
+				poly_vec[num_polys] = poly as Poly4df;
+				num_polys++;
+			}
+			if(poly is Array){
+				var arr:Array = poly as Array;
+				for each(var p:Poly4df in arr){
+					poly_vec[num_polys] = p;
+					num_polys++;
+				}
+			}
+		}
+		
 		public function toWorldPosition(world_pos:Point4d,coord_select:int = Constants.TRANSFORM_LOCAL_TO_TRANS):void{
 			var temp:Poly4df;
 			if(coord_select == Constants.TRANSFORM_LOCAL_TO_TRANS){				

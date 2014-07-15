@@ -1,6 +1,7 @@
 package
 {
 	import core.geometry.matrix.GowMatrix;
+	import core.load.FileLoader3D;
 	
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
@@ -13,11 +14,16 @@ package
 		private var iiii:int;
 		public function GOW_ENGINE()
 		{
-			var m1:GowMatrix = new GowMatrix(22,ii([1,1,2,0]));
-			var m2:GowMatrix = new GowMatrix(23,ii([0,2,3,1,1,2]));
-			trace(m1.multiply(m2).values);
-			trace(0x0001+2)
-			trace(Math.tan(Math.PI/4))
+//			var m1:GowMatrix = new GowMatrix(22,ii([1,1,2,0]));
+//			var m2:GowMatrix = new GowMatrix(23,ii([0,2,3,1,1,2]));
+//			var zz:Number = 13;
+//			trace(m1.multiply(m2).values);
+//			trace(0x0001+2)
+//			trace(Math.sin(Math.PI/6))
+//			trace(-zz+1);
+			var l:FileLoader3D = new FileLoader3D();
+			l.load("cube1.plg");
+			addChild(new Test);
 		}
 		
 		public function ii(arr:Array):Vector.<Number>{

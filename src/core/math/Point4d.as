@@ -8,7 +8,7 @@ package core.math
 		public var y:Number;
 		public var z:Number;
 		public var w:Number;
-		public function Point4d(x:Number,y:Number,z:Number,w:Number)
+		public function Point4d(x:Number = 0,y:Number = 0,z:Number = 0,w:Number = 1)
 		{
 			this.x = x;
 			this.y = y;

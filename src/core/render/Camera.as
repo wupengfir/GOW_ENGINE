@@ -1,7 +1,9 @@
 package core.render
 {
+	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.plane.Plane3d;
+	import core.geometry.poly.Poly4df;
 	import core.math.Point3d;
 	import core.math.Point4d;
 	import core.math.Vector3d;
@@ -114,6 +116,87 @@ package core.render
 				bt_clip_z.init(p,vn);
 			}
 			
+		}
+		
+		public function initWorldToCameraMatrix_Euler():void{
+			var mt_inv:GowMatrix = new GowMatrix(44);
+			var mx_inv:GowMatrix = new GowMatrix(44);
+			var my_inv:GowMatrix = new GowMatrix(44);
+			var mz_inv:GowMatrix = new GowMatrix(44);
+			mt_inv.init([1,0,0,0,
+						0,1,0,0,
+						0,0,1,0,
+						-pos.x,-pos.y,-pos.z,1]);
+			var t_x:Number = dir.x;
+			var t_y:Number = dir.y;
+			var t_z:Number = dir.z;
+			var cos_t:Number = Math.cos(t_x);
+			var sin_t:Number = -Math.sin(t_x);
+			mx_inv.init([1,0,0,0,
+						0,cos_t,sin_t,0,
+						0,-sin_t,cos_t,0,
+						0,0,0,1]);
+			cos_t = Math.cos(t_y);
+			sin_t = -Math.sin(t_y);
+			my_inv.init([cos_t,0,-sin_t,0,
+						0,1,0,0,
+						sin_t,0,cos_t,0,
+						0,0,0,1]);
+			cos_t = Math.cos(t_z);
+			sin_t = -Math.sin(t_z);
+			mz_inv.init([cos_t,sin_t,0,0,
+						-sin_t,cos_t,0,0,
+						0,0,1,0,
+						0,0,0,1]);
+			var temp:GowMatrix = my_inv.multiply(mz_inv) as GowMatrix;
+			temp = temp.multiply(mx_inv);
+			mcam = mt_inv.multiply(temp);
+		}
+		
+		public function cameraToPerspective(list:RenderList4d):void{
+			var temp:Poly4df;
+			for (var i:int = 0; i < list.num_polys; i++) 
+			{
+				temp = list.poly_vec[i];
+				if(temp==null||
+					!(temp.state&Constants.POLY4D_STATE_ACTIVE)||
+					temp.state&Constants.POLY4D_STATE_CLIPPED||
+					temp.state&Constants.POLY4D_STATE_BACKFACE)
+					continue;
+				for (var j:int = 0; j < 3; j++) 
+				{
+					var z:Number = temp.tvlist[j].z;
+					temp.tvlist[j].x = view_dist*temp.tvlist[j].x/z;
+					temp.tvlist[j].y = view_dist*temp.tvlist[j].y*aspect_radio/z;
+				}
+				
+			}		
+		}
+		
+		public function perspectiveToScreen(list:RenderList4d):void{
+			var temp:Poly4df;
+			for (var i:int = 0; i < list.num_polys; i++) 
+			{
+				temp = list.poly_vec[i];
+				if(temp==null||
+					!(temp.state&Constants.POLY4D_STATE_ACTIVE)||
+					temp.state&Constants.POLY4D_STATE_CLIPPED||
+					temp.state&Constants.POLY4D_STATE_BACKFACE)
+					continue;
+				var a:Number = 0.5*viewport_width-0.5;
+				var b:Number = 0.5*viewport_height-0.5;
+				for (var j:int = 0; j < 3; j++) 
+				{
+					temp.tvlist[j].x = a+a*temp.tvlist[j].x;
+					temp.tvlist[j].y = b-b*temp.tvlist[j].y;
+				}
+				
+			}		
+		}
+		
+		public function initCameraToPerspectiveMatrix(list:RenderList4d):void{
+			mper.init([view_dist,0,0,0,
+						0,]);			
 		}
 		
 	}

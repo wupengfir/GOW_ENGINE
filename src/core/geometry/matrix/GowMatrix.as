@@ -21,11 +21,20 @@ package core.geometry.matrix
 				}				
 				this.values = values;
 			}else{
-				values = new Vector.<Number>(rowNum*columnNum);
+				this.values = new Vector.<Number>(rowNum*columnNum);
 			}			
 		}
 		
-		public function multiply(m:Object):Object{
+		public function init(arr:Object):void{
+			var vec:Vector.<Number> = new Vector.<Number>();
+			for (var i:int = 0; i < arr.length; i++) 
+			{
+				vec.push(arr[i]);
+			}
+			this.values = vec;
+		}
+		
+		public function multiply(m:Object):GowMatrix{
 			if(m is GowMatrix){
 				if(columnNum != m.rowNum){
 					throw new Error("matrix could not be muliplied");
@@ -51,7 +60,7 @@ package core.geometry.matrix
 				return new GowMatrix(rowNum*10+m.columnNum,vec);
 			}
 			if(m is Point4d){
-				var vec:Vector.<Number> = new Vector.<Number>(4);
+				var vec:Vector.<Number> = new Vector.<Number>();
 				vec.push((m as Point4d).x);
 				vec.push((m as Point4d).y);
 				vec.push((m as Point4d).z);
@@ -61,7 +70,7 @@ package core.geometry.matrix
 				return result;
 			}
 			if(m is Vector4d){
-				var vec:Vector.<Number> = new Vector.<Number>(4);
+				var vec:Vector.<Number> = new Vector.<Number>();
 				vec.push((m as Vector4d).x);
 				vec.push((m as Vector4d).y);
 				vec.push((m as Vector4d).z);

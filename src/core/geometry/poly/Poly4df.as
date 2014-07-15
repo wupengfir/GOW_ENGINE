@@ -13,6 +13,11 @@ package core.geometry.poly
 		public var prec:Poly4df;
 		public function Poly4df()
 		{
+			for (var i:int = 0; i < 3; i++) 
+			{
+				tvlist[i] = new Point4d();
+			}
+			
 		}
 	}
 }
