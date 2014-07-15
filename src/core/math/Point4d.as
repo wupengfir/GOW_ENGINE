@@ -16,11 +16,12 @@ package core.math
 			this.w = w;
 		}
 		
-		public function copyFromPoint4d(p:Point4d):void{
+		public function copyFromPoint4d(p:Point4d):Point4d{
 			this.x = p.x;
 			this.y = p.y;
 			this.z = p.z;
 			this.w = p.w;
+			return this;
 		}
 		
 		public function copyFromMatrix(m:GowMatrix):void{

@@ -1,7 +1,7 @@
 package
 {
 	import core.geometry.matrix.GowMatrix;
-	import core.load.FileLoader3D;
+	import core.load.PLG_Loader;
 	
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
@@ -21,8 +21,7 @@ package
 //			trace(0x0001+2)
 //			trace(Math.sin(Math.PI/6))
 //			trace(-zz+1);
-			var l:FileLoader3D = new FileLoader3D();
-			l.load("cube1.plg");
+			
 			addChild(new Test);
 		}
 		

@@ -4,6 +4,7 @@ package
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.poly.Poly4d;
 	import core.geometry.poly.Poly4df;
+	import core.load.PLG_Loader;
 	import core.math.Point4d;
 	import core.math.Vector4d;
 	import core.render.Camera;
@@ -29,17 +30,25 @@ package
 		public var rm:RenderManager = new RenderManager();
 		public function Test()
 		{
-			poly = new Poly4df();
-			poly.state = Constants.POLY4D_STATE_ACTIVE;
-			poly.attr = 0;
-			poly.vlist[0] = new Point4d(0,50,0,1);
-			poly.vlist[1] = new Point4d(50,-50,0,1);
-			poly.vlist[2] = new Point4d(-50,-50,0,1);
+			var l:PLG_Loader = new PLG_Loader();
+			l.load("tank1.plg",1,new Point4d(0,0,0,1));
+//			poly = new Poly4df();
+//			poly.state = Constants.POLY4D_STATE_ACTIVE;
+//			poly.attr = 0;
+//			poly.vlist[0] = new Point4d(0,50,0,1);
+//			poly.vlist[1] = new Point4d(50,-50,0,1);
+//			poly.vlist[2] = new Point4d(-50,-50,0,1);
+//			renderList.addPoly(poly);
 			cam = new Camera();
 			cam.initCamera(0,cam_pos,cam_dir,null,50,500,90,950,650);			
 			var index:int;
-			renderList.addPoly(poly);
+
+			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
 			addEventListener(Event.ENTER_FRAME,onEnter);
+		}
+		
+		private function onComplete(e:Event):void{
+			renderList.addPoly(e.target.polyData);
 		}
 		
 		public function onEnter(e:Event):void{
