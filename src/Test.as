@@ -1,5 +1,10 @@
 package
 {
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	
 	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.poly.Poly4d;
@@ -12,15 +17,11 @@ package
 	import core.render.RenderManager;
 	import core.util.Util;
 	
-	import flash.display.Graphics;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	
 	public class Test extends Sprite
 	{
 		
 		public var cam_pos:Point4d = new Point4d(0,0,-100,1);
-		public var cam_dir:Vector4d = new Vector4d(0,0,0,1);
+		public var cam_dir:Vector4d = new Vector4d(Math.PI/6,0,0,1);
 		public var cam:Camera;
 		public var renderList:RenderList4d = new RenderList4d();
 		public var poly:Poly4df;
@@ -44,7 +45,40 @@ package
 			var index:int;
 
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
-			addEventListener(Event.ENTER_FRAME,onEnter);
+			addEventListener(Event.ADDED_TO_STAGE,function(e:Event):void{
+				addEventListener(Event.ENTER_FRAME,onEnter);
+				stage.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
+				stage.addEventListener(MouseEvent.MOUSE_UP,onUp);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE,onMove);
+			});
+			
+		}
+		private var flag:Boolean = false;
+		private var cx:Number;
+		private var cy:Number;
+		private var dirx:Number;
+		private var diry:Number;
+		private function onDown(e:MouseEvent):void{
+			flag = true;
+			cx = e.stageX;
+			cy = e.stageY;
+			dirx = cam.dir.x;
+			diry = cam.dir.y;
+		}
+		
+		public function onMove(e:MouseEvent):void{
+			if(!flag)
+			return;
+			var cx_dis:Number = e.stageX - cx;
+			var cy_dis:Number = e.stageY - cy;
+			cam.dir.x = dirx - cy_dis/1000;
+			cam.dir.y = diry - cx_dis/1000;
+			trace(cam.dir.x +"    "+cam.dir.y);
+		}
+		
+		private function onUp(e:MouseEvent):void{
+			flag = false;
+			//renderList.addPoly(e.target.polyData);
 		}
 		
 		private function onComplete(e:Event):void{
@@ -54,7 +88,7 @@ package
 		public function onEnter(e:Event):void{
 			var cos:Number = Math.cos(Util.deg_to_rad(ang_y));
 			var sin:Number = Math.sin(Util.deg_to_rad(ang_y));
-			if(++ang_y>=360)ang_y = 0;
+		//	if(++ang_y>=360)ang_y = 0;
 			mrot.init([cos,0,-sin,0,
 						0,1,0,0,
 						sin,0,cos,0,
