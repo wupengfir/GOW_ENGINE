@@ -22,7 +22,7 @@ package
 //			trace(Math.sin(Math.PI/6))
 //			trace(-zz+1);
 			
-			addChild(new Test);
+			addChild(new TestObject);
 		}
 		
 		public function ii(arr:Array):Vector.<Number>{

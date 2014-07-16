@@ -2,6 +2,7 @@ package core.render
 {
 	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
+	import core.geometry.object.Object4d;
 	import core.geometry.plane.Plane3d;
 	import core.geometry.poly.Poly4df;
 	import core.math.Point3d;
@@ -153,7 +154,26 @@ package core.render
 			mcam = mt_inv.multiply(temp);
 		}
 		
-		public function cameraToPerspective(list:RenderList4d):void{
+		//消除物体背面
+		public function removeBackfaces_obj(obj:Object4d):void{
+			var viewVector:Vector4d = new Vector4d();
+			for (var i:int = 0; i < obj.numPolys; i++) 
+			{
+				viewVector.x = pos.x - obj.poly_vec[i].tvlist[0].x;
+				viewVector.y = pos.y - obj.poly_vec[i].tvlist[0].y;
+				viewVector.z = pos.z - obj.poly_vec[i].tvlist[0].z;
+				obj.poly_vec[i].calculateNormalVector();
+				var pointMu:Number = viewVector.x*obj.poly_vec[i].normalVector.x+viewVector.y*obj.poly_vec[i].normalVector.y +viewVector.z*obj.poly_vec[i].normalVector.z;
+				if(pointMu<0){
+					obj.poly_vec[i].state = Constants.POLY4D_STATE_BACKFACE;
+				}else{
+					obj.poly_vec[i].state = Constants.POLY4D_STATE_ACTIVE;
+				}
+			}
+		}
+		
+		
+		public function cameraToPerspective_renderlist(list:RenderList4d):void{
 			var temp:Poly4df;
 			for (var i:int = 0; i < list.num_polys; i++) 
 			{
@@ -173,7 +193,43 @@ package core.render
 			}		
 		}
 		
-		public function perspectiveToScreen(list:RenderList4d):void{
+		public function cameraToPerspective_object(obj:Object4d):void{
+			var vertice:Point4d;
+			for (var i:int = 0; i < obj.numVertices; i++) 
+			{
+				vertice = obj.vlist_trans[i];
+				if(vertice==null)
+					continue;
+				var z:Number = vertice.z;
+				vertice.x = view_dist*vertice.x/z;
+				vertice.y = view_dist*vertice.y*aspect_radio/z;				
+			}		
+		}
+		
+		
+		
+		//没啥用
+		public function cameraToPerspective_object_polys(obj:Object4d):void{
+			var temp:Poly4df;
+			for (var i:int = 0; i < obj.numPolys; i++) 
+			{
+				temp = obj.poly_vec[i];
+				if(temp==null||
+					!(temp.state&Constants.POLY4D_STATE_ACTIVE)||
+					temp.state&Constants.POLY4D_STATE_CLIPPED||
+					temp.state&Constants.POLY4D_STATE_BACKFACE)
+					continue;
+				for (var j:int = 0; j < 3; j++) 
+				{
+					var z:Number = temp.tvlist[j].z;
+					temp.tvlist[j].x = view_dist*temp.tvlist[j].x/z;
+					temp.tvlist[j].y = view_dist*temp.tvlist[j].y*aspect_radio/z;
+				}
+				
+			}		
+		}
+		
+		public function perspectiveToScreen_renderlist(list:RenderList4d):void{
 			var temp:Poly4df;
 			for (var i:int = 0; i < list.num_polys; i++) 
 			{
@@ -192,6 +248,54 @@ package core.render
 				}
 				
 			}		
+		}
+		
+		public function perspectiveToScreen_obj_poly(obj:Object4d):void{
+			var temp:Poly4df;
+			for (var i:int = 0; i < obj.numPolys; i++) 
+			{
+				temp = obj.poly_vec[i];
+				if(temp==null||
+					!(temp.state&Constants.POLY4D_STATE_ACTIVE)||
+					temp.state&Constants.POLY4D_STATE_CLIPPED||
+					temp.state&Constants.POLY4D_STATE_BACKFACE)
+					continue;
+				var a:Number = 0.5*viewport_width-0.5;
+				var b:Number = 0.5*viewport_height-0.5;
+				for (var j:int = 0; j < 3; j++) 
+				{
+					temp.tvlist[j].x = a+a*temp.tvlist[j].x;
+					temp.tvlist[j].y = b-b*temp.tvlist[j].y;
+				}
+				
+			}		
+		}
+		
+		public function perspectiveToScreen_obj(obj:Object4d):void{
+			var temp:Point4d;
+			for (var i:int = 0; i < obj.numVertices; i++) 
+			{
+				temp = obj.vlist_trans[i];
+				if(temp==null)
+					continue;
+				var a:Number = 0.5*viewport_width-0.5;
+				var b:Number = 0.5*viewport_height-0.5;
+				temp.x = a+a*temp.x;
+				temp.y = b-b*temp.y;
+				
+			}		
+		}
+		
+		public function set rotationX(rx:Number):void{
+			
+		}
+		
+		public function set rotationY(rx:Number):void{
+			
+		}
+		
+		public function set rotationZ(rx:Number):void{
+			
 		}
 		
 		public function initCameraToPerspectiveMatrix(list:RenderList4d):void{

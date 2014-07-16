@@ -73,6 +73,79 @@ package core.render
 			}
 		}
 		
+		public function transform_object_polys(list:Object4d,matrix:GowMatrix,coord_select:int,transform_basis:Boolean){
+			var temp:Poly4df;
+			switch(coord_select){
+				case Constants.TRANSFORM_LOCAL_ONLY:
+					
+					for (var i:int = 0; i < list.numPolys; i++) 
+					{
+						temp = list.poly_vec[i];
+						if(temp==null||
+							!(temp.state&Constants.POLY4D_STATE_ACTIVE)||
+							temp.state&Constants.POLY4D_STATE_CLIPPED||
+							temp.state&Constants.POLY4D_STATE_BACKFACE)
+							continue;
+						for (var j:int = 0; j < 3; j++) 
+						{
+							var result:GowMatrix = matrix.multiply(temp.vlist[j]);
+							temp.vlist[j].copyFromMatrix(result);
+						}
+						
+					}
+					
+					break;
+				case Constants.TRANSFORM_TRANS_ONLY:
+					
+					for (var i:int = 0; i < list.numPolys; i++) 
+					{
+						temp = list.poly_vec[i];
+						if(temp==null||
+							!(temp.state&Constants.POLY4D_STATE_ACTIVE)||
+							temp.state&Constants.POLY4D_STATE_CLIPPED||
+							temp.state&Constants.POLY4D_STATE_BACKFACE)
+							continue;
+						for (var j:int = 0; j < 3; j++) 
+						{
+							var result:GowMatrix = matrix.multiply(temp.tvlist[j]);
+							temp.tvlist[j].copyFromMatrix(result);
+						}
+						
+					}
+					break;
+				case Constants.TRANSFORM_LOCAL_TO_TRANS:
+					for (var i:int = 0; i < list.numPolys; i++) 
+					{
+						temp = list.poly_vec[i];
+						if(temp==null||
+							!(temp.state&Constants.POLY4D_STATE_ACTIVE)||
+							temp.state&Constants.POLY4D_STATE_CLIPPED||
+							temp.state&Constants.POLY4D_STATE_BACKFACE)
+							continue;
+						for (var j:int = 0; j < 3; j++) 
+						{
+							var result:GowMatrix = matrix.multiply(temp.vlist[j]);
+							temp.tvlist[j].copyFromMatrix(result);
+						}
+						
+					}
+					break;
+			}
+			if(transform_basis){
+				var tempV:Vector4d = list.ux;
+				result = matrix.multiply(tempV);
+				list.ux.copyFromMatrix(result);
+				
+				tempV = list.uy;
+				result = matrix.multiply(tempV);
+				list.uy.copyFromMatrix(result);
+				
+				tempV = list.uz;
+				result = matrix.multiply(tempV);
+				list.uz.copyFromMatrix(result);
+			}
+		}
+		
 		public function transform_object4d(obj:Object4d,matrix:GowMatrix,coord_select:int,transform_basis:Boolean):void{
 			var temp:Point4d;
 			var result:GowMatrix

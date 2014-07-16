@@ -8,7 +8,7 @@ package core.math
 		public var y:Number;
 		public var z:Number;
 		public var w:Number;
-		public function Vector4d(x:Number,y:Number,z:Number,w:Number)
+		public function Vector4d(x:Number = 0,y:Number = 0,z:Number = 0,w:Number = 0)
 		{
 			this.x = x;
 			this.y = y;
@@ -26,6 +26,12 @@ package core.math
 			this.y = m.values[1];
 			this.z = m.values[2];
 			this.w = m.values[3];
+		}
+		
+		public function minus():void{
+			this.x = -x;
+			this.y = -y;
+			this.z = -z;
 		}
 		
 	}
