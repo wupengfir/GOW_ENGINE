@@ -249,7 +249,7 @@ package core.render
 				
 			}		
 		}
-		
+		//没啥用
 		public function perspectiveToScreen_obj_poly(obj:Object4d):void{
 			var temp:Poly4df;
 			for (var i:int = 0; i < obj.numPolys; i++) 
@@ -286,16 +286,19 @@ package core.render
 			}		
 		}
 		
+		public var rx:Number = 0;
+		public var ry:Number = 0;
+		public var rz:Number = 0;
 		public function set rotationX(rx:Number):void{
-			
+			this.rx = rx;
 		}
 		
-		public function set rotationY(rx:Number):void{
-			
+		public function set rotationY(ry:Number):void{
+			this.ry = ry;
 		}
 		
-		public function set rotationZ(rx:Number):void{
-			
+		public function set rotationZ(rz:Number):void{
+			this.rz = rz;
 		}
 		
 		public function initCameraToPerspectiveMatrix(list:RenderList4d):void{

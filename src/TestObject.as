@@ -18,6 +18,7 @@ package
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	
 	public class TestObject extends Sprite
@@ -46,12 +47,50 @@ package
 				stage.addEventListener(MouseEvent.MOUSE_DOWN,onDown);
 				stage.addEventListener(MouseEvent.MOUSE_UP,onUp);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE,onMove);
+				stage.addEventListener(KeyboardEvent.KEY_UP,keyup);
+				stage.addEventListener(KeyboardEvent.KEY_DOWN,keydown);
 			});
 			world.camera = cam;
-			obj.worldPosition = poly_pos;
-			world.objectArray.push(obj);
+			
+			obj.worldPosition = poly_pos;			
+			//world.objectArray.push(obj);
 			addChild(world);
 		}
+		
+		private var moveback:Boolean = false;
+		private var moveright:Boolean = false;
+		private var moveleft:Boolean = false;
+		private var movefront:Boolean = false;
+		private var moveup:Boolean = false;
+		public function keyup(event:KeyboardEvent) {
+			if (event.keyCode==83) {
+				moveback=false;
+			} else if (event.keyCode==68) {
+				moveright=false;
+			} else if (event.keyCode==65) {
+				moveleft=false;
+			} else if (event.keyCode==87) {
+				movefront=false;
+			}else if (event.keyCode==32) {
+				moveup=false;
+			}
+			
+		}
+		
+		public function keydown(event:KeyboardEvent) {
+			if (event.keyCode==83) {
+				moveback=true;
+			} else if (event.keyCode==68) {
+				moveright=true;
+			} else if (event.keyCode==65) {
+				moveleft=true;
+			} else if (event.keyCode==87) {
+				movefront=true;
+			}else if (event.keyCode==32) {
+				moveup=true;
+			}
+		}
+		
 		
 		private var flag:Boolean = false;
 		private var cx:Number;
@@ -83,26 +122,68 @@ package
 		private function onComplete(e:Event):void{
 			obj.addVertices(e.target.objectVerticesData);
 			obj.fillPolyVec();
+			for (var i:int = 0; i < 20; i++) 
+			{
+				var o:Object4d = new Object4d().copyFromObject4d(obj);
+				o.worldPosition = new Point4d((i%5)*200-500,0,(int(i/5))*200+100,1);
+				world.add(o);
+			}
 		}
 		
 		public function onEnter(e:Event):void{
-			var cos:Number = Math.cos(Util.deg_to_rad(ang_y));
-			var sin:Number = Math.sin(Util.deg_to_rad(ang_y));
-			if(++ang_y>=360)ang_y = 0;
-			mrot.init([cos,0,-sin,0,
-				0,1,0,0,
-				sin,0,cos,0,
-				0,0,0,1]);
+//			var cos:Number = Math.cos(Util.deg_to_rad(ang_y));
+//			var sin:Number = Math.sin(Util.deg_to_rad(ang_y));
+//			if(++ang_y>=360)ang_y = 0;
+//			mrot.init([cos,0,-sin,0,
+//				0,1,0,0,
+//				sin,0,cos,0,
+//				0,0,0,1]);
 //			mrot.init([1,0,0,0,
 //				0,cos,sin,0,
 //				0,-sin,cos,0,
 //				0,0,0,1]);
-			rm.transform_object4d(obj,mrot,Constants.TRANSFORM_LOCAL_TO_TRANS,false);			
-			obj.toWorldPosition(Constants.TRANSFORM_TRANS_ONLY);
+//			rm.transform_object4d(obj,mrot,Constants.TRANSFORM_LOCAL_TO_TRANS,false);			
+//			obj.toWorldPosition(Constants.TRANSFORM_TRANS_ONLY);
 			
-			cam.removeBackfaces_obj(obj);
+//			cam.removeBackfaces_obj(obj);
 			
-			world.render();
+//			if(moveright){
+//				cam.pos.x +=10; 
+//			}
+//			if(moveleft){
+//				cam.pos.x -=10; 
+//			}
+//			if(movefront){
+//				cam.pos.z +=10;
+//			}
+//			if(moveback){
+//				cam.pos.z -=10;
+//			}
+//			if(moveup){
+//				cam.pos.y +=10;
+//			} 
+			if(moveright){
+				cam.pos.x +=10*Math.cos(-cam.dir.y); 
+				cam.pos.z +=10*Math.sin(-cam.dir.y); 
+			}
+			if(moveleft){
+				cam.pos.x -=10*Math.cos(-cam.dir.y); 
+				cam.pos.z -=10*Math.sin(-cam.dir.y);
+			}
+			if(movefront){
+				cam.pos.z +=10;
+			}
+			if(moveback){
+				cam.pos.z -=10;
+			}
+			if(moveup){
+				cam.pos.y +=10;
+			} 
+			++ang_y;
+			for each(var o:Object4d in world.objectArray){
+				o.rotationY = ang_y;
+			}
+			world.render(false);
 		}
 		
 	}

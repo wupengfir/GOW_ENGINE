@@ -23,7 +23,18 @@ package core.render
 			this.cam = cam;
 		}
 		
-		public function render():void{
+		public function add(o:Object):void{
+			if(o is RenderList4d){
+				renderListArray.push(o);
+				//(o as RenderList4d).toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
+			}
+			if(o is Object4d){
+				objectArray.push(o);
+				//(o as Object4d).toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
+			}
+		}
+		
+		public function render(back:Boolean = false):void{
 			if(cam == null)return;			
 			var g:Graphics = this.graphics;
 			g.clear();
@@ -52,7 +63,11 @@ package core.render
 					
 				}
 			}
-			for each(var object:Object4d in objectArray){				
+			for each(var object:Object4d in objectArray){	
+				object.toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
+				if(back){
+					cam.removeBackfaces_obj(object);
+				}
 				cam.initWorldToCameraMatrix_Euler();
 				rm.transform_object4d(object,cam.mcam,Constants.TRANSFORM_TRANS_ONLY,false);
 				cam.cameraToPerspective_object(object);
