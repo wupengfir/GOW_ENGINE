@@ -201,8 +201,12 @@ package core.render
 				if(vertice==null)
 					continue;
 				var z:Number = vertice.z;
+				
 				vertice.x = view_dist*vertice.x/z;
-				vertice.y = view_dist*vertice.y*aspect_radio/z;				
+				vertice.y = view_dist*vertice.y*aspect_radio/z;			
+				if(z<0){
+					trace(z +"  "+vertice.x+"    "+vertice.y);
+				}
 			}		
 		}
 		
