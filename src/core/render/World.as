@@ -34,7 +34,7 @@ package core.render
 			}
 		}
 		
-		public function render(back:Boolean = false):void{
+		public function render(back:Boolean = false,cull:Boolean = true):void{
 			if(cam == null)return;			
 			var g:Graphics = this.graphics;
 			g.clear();
@@ -65,10 +65,16 @@ package core.render
 			}
 			for each(var object:Object4d in objectArray){	
 				object.toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
+				cam.initWorldToCameraMatrix_Euler();
 				if(back){
 					cam.removeBackfaces_obj(object);
 				}
-				cam.initWorldToCameraMatrix_Euler();
+				if(cull){
+					cam.cullObject(object,Constants.CULL_XYZ);
+				}
+				if(object.state == Constants.POLY4D_STATE_CLIPPED){
+					continue;
+				}
 				rm.transform_object4d(object,cam.mcam,Constants.TRANSFORM_TRANS_ONLY,false);
 				cam.cameraToPerspective_object(object);
 				cam.perspectiveToScreen_obj(object);

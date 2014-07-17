@@ -24,11 +24,12 @@ package core.math
 			return this;
 		}
 		
-		public function copyFromMatrix(m:GowMatrix):void{
+		public function copyFromMatrix(m:GowMatrix):Point4d{
 			this.x = m.values[0];
 			this.y = m.values[1];
 			this.z = m.values[2];
 			this.w = m.values[3];
+			return this;
 		}
 		
 		public function add(p:Point4d,store:Point4d):void{

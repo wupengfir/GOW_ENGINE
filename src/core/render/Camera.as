@@ -23,7 +23,7 @@ package core.render
 		public var n:Vector4d;
 		public var target:Point4d;
 		//焦点视距
-		public var view_dist:Number;
+		public var view_dist:Number = 1;
 		//视野
 		public var fov:Number;
 		//裁剪面
@@ -206,7 +206,27 @@ package core.render
 			}		
 		}
 		
-		
+		public function cullObject(obj:Object4d,cullType:int):void{
+			obj.state = Constants.POLY4D_STATE_ACTIVE;
+			var temp:Point4d = new Point4d().copyFromMatrix(mcam.multiply(obj.worldPosition));
+			if(cullType&Constants.CULL_Z){
+				if((temp.z - obj.maxRadius)>far_clip_z||(temp.z + obj.maxRadius)<near_clip_z){
+					obj.state = Constants.POLY4D_STATE_CLIPPED;
+				}
+			}
+			if(cullType&Constants.CULL_X){
+				var ztest:Number = 0.5*viewplane_width*temp.z/view_dist;
+				if((temp.x - obj.maxRadius)>ztest||(temp.x + obj.maxRadius)<-ztest){
+					obj.state = Constants.POLY4D_STATE_CLIPPED;
+				}
+			}
+			if(cullType&Constants.CULL_Y){
+				var ztest:Number = 0.5*viewport_height*temp.z/view_dist;
+				if((temp.y - obj.maxRadius)>ztest||(temp.y + obj.maxRadius)<-ztest){
+					obj.state = Constants.POLY4D_STATE_CLIPPED;
+				}
+			}
+		}
 		
 		//没啥用
 		public function cameraToPerspective_object_polys(obj:Object4d):void{

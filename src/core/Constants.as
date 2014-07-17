@@ -7,7 +7,7 @@ package core
 		
 		public static const POLY4D_ATTR_2SIDES:int = 0x0001;
 		public static const POLY4D_ATTR_TRANSPARENT:int = 0x0002;
-		public static const POLY4D_ATTR_8BITCOLOR:int = 0x0008;
+		public static const POLY4D_ATTR_8BITCOLOR:int = 0x0004;
 		public static const POLY4D_ATTR_RGB16:int = 0x0008;
 		public static const POLY4D_ATTR_RGB24:int = 0x0010;		
 		public static const POLY4D_ATTR_SHADE_MODE_PURE:int = 0x0020;
@@ -22,6 +22,11 @@ package core
 		public static const TRANSFORM_LOCAL_ONLY:int = 0;
 		public static const TRANSFORM_TRANS_ONLY:int = 1;
 		public static const TRANSFORM_LOCAL_TO_TRANS:int = 2;
+		
+		public static const CULL_X:int = 0x0001;
+		public static const CULL_Y:int = 0x0002;
+		public static const CULL_Z:int = 0x0004;
+		public static const CULL_XYZ:int = 0x0007;
 		public function Constants()
 		{
 		}

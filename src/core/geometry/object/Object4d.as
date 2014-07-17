@@ -14,8 +14,8 @@ package core.geometry.object
 		public var name:String = "";
 		public var state:int;
 		public var attr:int;
-		public var avgRadius:Number;
-		public var maxRadius:Number;
+		public var avgRadius:Number = 0;
+		public var maxRadius:Number = 0;
 		public var worldPosition:Point4d;
 		//物体方向向量
 		public var dir:Vector4d;
@@ -54,6 +54,14 @@ package core.geometry.object
 					numVertices++;
 				}
 			}
+			for (var i:int = 0; i < numVertices; i++) 
+			{
+				var tRadius = Math.sqrt(vlist_local[i].x*vlist_local[i].x+vlist_local[i].y*vlist_local[i].y+vlist_local[i].z*vlist_local[i].z);
+				if(tRadius>maxRadius){
+					maxRadius = tRadius;
+				}
+			}
+			
 		}
 		
 		public function fillPolyVec(type:int = 1):void{
@@ -107,6 +115,8 @@ package core.geometry.object
 				vlist_trans[i] = new Point4d().copyFromPoint4d(source.vlist_trans[i]);
 				numVertices++;
 			}
+			this.avgRadius = source.maxRadius;
+			this.maxRadius = source.maxRadius;
 			fillPolyVec();
 			return this;
 		}
@@ -143,7 +153,6 @@ package core.geometry.object
 				sin,0,cos,0,
 				0,0,0,1]);
 			rm.transform_object4d(this,mrot,Constants.TRANSFORM_LOCAL_ONLY,false);
-			trace(ry+"   "+oldy);
 			oldy = ry;
 		}
 		

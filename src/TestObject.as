@@ -38,7 +38,7 @@ package
 		public function TestObject()
 		{
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
-			l.load("tank1.plg",new Vector3d(1,1,1),new Point4d(0,0,0,1));
+			l.load("cube1.plg",new Vector3d(5,5,5),new Point4d(0,0,0,1));
 			cam = new Camera();
 			cam.initCamera(0,cam_pos,cam_dir,null,50,500,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
@@ -122,10 +122,10 @@ package
 		private function onComplete(e:Event):void{
 			obj.addVertices(e.target.objectVerticesData);
 			obj.fillPolyVec();
-			for (var i:int = 0; i < 20; i++) 
+			for (var i:int = 0; i < 100; i++) 
 			{
 				var o:Object4d = new Object4d().copyFromObject4d(obj);
-				o.worldPosition = new Point4d((i%5)*200-500,0,(int(i/5))*200+100,1);
+				o.worldPosition = new Point4d((i%5)*200,0,(int(i/5))*200+100,1);
 				world.add(o);
 			}
 		}
