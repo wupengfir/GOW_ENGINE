@@ -40,7 +40,7 @@ package
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
 			l.load("cube1.plg",new Vector3d(5,5,5),new Point4d(0,0,0,1));
 			cam = new Camera();
-			cam.initCamera(0,cam_pos,cam_dir,null,50,500,90,950,300);			
+			cam.initCamera(0,cam_pos,cam_dir,null,100,500,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
 			addEventListener(Event.ADDED_TO_STAGE,function(e:Event):void{
 				addEventListener(Event.ENTER_FRAME,onEnter);
@@ -62,6 +62,7 @@ package
 		private var moveleft:Boolean = false;
 		private var movefront:Boolean = false;
 		private var moveup:Boolean = false;
+		private var movedown:Boolean = false;
 		public function keyup(event:KeyboardEvent) {
 			if (event.keyCode==83) {
 				moveback=false;
@@ -73,6 +74,8 @@ package
 				movefront=false;
 			}else if (event.keyCode==32) {
 				moveup=false;
+			}else if (event.keyCode==82) {
+				movedown=false;
 			}
 			
 		}
@@ -88,6 +91,8 @@ package
 				movefront=true;
 			}else if (event.keyCode==32) {
 				moveup=true;
+			}else if (event.keyCode==82) {
+				movedown=true;
 			}
 		}
 		
@@ -122,7 +127,7 @@ package
 		private function onComplete(e:Event):void{
 			obj.addVertices(e.target.objectVerticesData);
 			obj.fillPolyVec();
-			for (var i:int = 0; i < 1; i++) 
+			for (var i:int = 0; i < 100; i++) 
 			{
 				var o:Object4d = new Object4d().copyFromObject4d(obj);
 				o.worldPosition = new Point4d((i%5)*200,0,(int(i/5))*200+100,1);
@@ -178,12 +183,15 @@ package
 			}
 			if(moveup){
 				cam.pos.y +=10;
+			}
+			if(movedown){
+				cam.pos.y -=10;
 			} 
 			++ang_y;
 			for each(var o:Object4d in world.objectArray){
 				o.rotationY = ang_y;
 			}
-			world.render(true);
+			world.render();
 		}
 		
 	}
