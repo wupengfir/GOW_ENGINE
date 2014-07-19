@@ -27,6 +27,9 @@ package core
 		public static const CULL_Y:int = 0x0002;
 		public static const CULL_Z:int = 0x0004;
 		public static const CULL_XYZ:int = 0x0007;
+		
+		public static const UNV_MODE_SIMPLE:int = 0;
+		public static const UNV_MODE_SPHERICAL:int = 1;
 		public function Constants()
 		{
 		}

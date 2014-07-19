@@ -56,8 +56,12 @@ package core.geometry.matrix
 					vec[i] = temp;
 					temp = 0;
 				}
-				
-				return new GowMatrix(rowNum*10+m.columnNum,vec);
+//				if(store){
+//					store.init(vec);
+//					return null;
+//				}else{
+					return new GowMatrix(rowNum*10+m.columnNum,vec);
+//				}			
 			}
 			if(m is Point4d){
 				var vec:Vector.<Number> = new Vector.<Number>();

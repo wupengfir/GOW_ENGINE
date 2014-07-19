@@ -14,6 +14,9 @@ package core.render
 	public class Camera
 	{
 		
+		public static const CAMERA_TYPE_EULER:int = 0;
+		public static const CAMERA_TYPE_UVN:int = 1;
+		
 		public var state:int;
 		public var attr:int;
 		public var pos:Point4d;
@@ -85,7 +88,7 @@ package core.render
 			viewplane_width = 2;
 			viewplane_height = 2/aspect_radio;
 			var tan_fov:Number = Math.tan(Util.deg_to_rad(fov/2));
-			view_dist = 0.5*viewplane_width*tan_fov;
+			view_dist = 0.5*viewplane_width/tan_fov;
 			//右手坐标系
 			var p:Point3d = new Point3d(0,0,0);
 			var vn:Vector3d;
@@ -118,8 +121,8 @@ package core.render
 			}
 			
 		}
-		
-		public function initWorldToCameraMatrix_Euler():void{
+				
+		public function buildWorldToCameraMatrix_Euler():void{
 			var mt_inv:GowMatrix = new GowMatrix(44);
 			var mx_inv:GowMatrix = new GowMatrix(44);
 			var my_inv:GowMatrix = new GowMatrix(44);
@@ -153,6 +156,41 @@ package core.render
 			temp = temp.multiply(mx_inv);
 			mcam = mt_inv.multiply(temp);
 		}
+		
+		public function buildWorldToCameraMatrix_unv(mode:int):void{
+			var temp:GowMatrix = new GowMatrix(44);
+			temp.init([1,0,0,0,
+						0,1,0,0,
+						0,0,1,0,
+						-pos.x,-pos.y,-pos.z,1]);
+			if(mode == Constants.UNV_MODE_SPHERICAL){
+				var phi:Number = dir.y;
+				var theta:Number = dir.z;
+				var cos_phi:Number = Math.cos(phi);
+				var sin_phi:Number = Math.sin(phi);
+				var cos_theta:Number = Math.cos(theta);
+				var sin_theta:Number = Math.sin(theta);
+				var r:Number = sin_phi;
+				target.x = r*cos_theta;
+				target.y = r*sin_theta;
+				target.z = cos_phi;
+			}
+			
+			n.build(pos,target);
+			v.setProperty(0,1,0,1);
+			
+			v.cross(n,u);
+			n.cross(u,v);
+			u.normalize();n.normalize();v.normalize();
+			var temp_uvn:GowMatrix = new GowMatrix(44);
+			temp_uvn.init([u.x,v.x,n.x,0,
+						u.y,v.y,n.y,0,
+						u.z,v.z,n.z,0,
+						0,0,0,1]);
+			mcam = temp.multiply(temp_uvn);
+			
+		}
+		
 		
 		//消除物体背面
 		public function removeBackfaces_obj(obj:Object4d):void{

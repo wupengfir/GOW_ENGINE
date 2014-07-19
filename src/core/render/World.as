@@ -1,12 +1,12 @@
 package core.render
 {
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	
 	import core.Constants;
 	import core.geometry.object.Object4d;
 	import core.geometry.poly.Poly4df;
 	import core.math.Point4d;
-	
-	import flash.display.Graphics;
-	import flash.display.Sprite;
 
 	public class World extends Sprite
 	{
@@ -40,7 +40,7 @@ package core.render
 			g.clear();
 			var temp:Poly4df;
 			for each(var renderList:RenderList4d in renderListArray){				
-				cam.initWorldToCameraMatrix_Euler();
+				cam.buildWorldToCameraMatrix_Euler();
 				rm.transform_renderList(renderList,cam.mcam,Constants.TRANSFORM_TRANS_ONLY);
 				cam.cameraToPerspective_renderlist(renderList);
 				cam.perspectiveToScreen_renderlist(renderList);
@@ -65,7 +65,12 @@ package core.render
 			}
 			for each(var object:Object4d in objectArray){	
 				object.toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
-				cam.initWorldToCameraMatrix_Euler();
+				if(cam.attr == Camera.CAMERA_TYPE_EULER){
+					cam.buildWorldToCameraMatrix_Euler();
+				}else{
+					cam.buildWorldToCameraMatrix_unv(Constants.UNV_MODE_SIMPLE);
+				}
+				
 				if(back){
 					cam.removeBackfaces_obj(object);
 				}

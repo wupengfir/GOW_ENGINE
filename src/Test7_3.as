@@ -21,10 +21,11 @@ package
 	import core.render.World;
 	import core.util.Util;
 	
-	public class TestObject extends Sprite
+	public class Test7_3 extends Sprite
 	{
-		public var cam_pos:Point4d = new Point4d(0,0,-100,1);
-		public var cam_dir:Vector4d = new Vector4d(0,0,0,1);
+		public var cam_pos:Point4d = new Point4d(100,0,-100,1);
+		public var cam_dir:Vector4d = new Vector4d(0,0,100,1);
+		public var target:Point4d = new Point4d(0,0,400,1);
 		public var cam:Camera;
 		public var renderList:RenderList4d = new RenderList4d();
 		public var obj:Object4d = new Object4d();
@@ -35,12 +36,13 @@ package
 		public var rm:RenderManager = new RenderManager();
 		
 		private var world:World = new World();
-		public function TestObject()
+		private var cameraDistance:Number = 0;
+		public function Test7_3()
 		{
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
-			l.load("cube1.plg",new Vector3d(5,5,5),new Point4d(0,0,0,1));
+			l.load("tank1.plg",new Vector3d(1,1,1),new Point4d(0,0,0,1));
 			cam = new Camera();
-			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,100,500,90,950,650);			
+			cam.initCamera(Camera.CAMERA_TYPE_UVN,cam_pos,cam_dir,target,400,5000,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
 			addEventListener(Event.ADDED_TO_STAGE,function(e:Event):void{
 				addEventListener(Event.ENTER_FRAME,onEnter);
@@ -55,6 +57,7 @@ package
 			obj.worldPosition = poly_pos;			
 			//world.objectArray.push(obj);
 			addChild(world);
+			cameraDistance = 500;
 		}
 		
 		private var moveback:Boolean = false;
@@ -130,50 +133,30 @@ package
 			for (var i:int = 0; i < 20; i++) 
 			{
 				var o:Object4d = new Object4d().copyFromObject4d(obj);
-				o.worldPosition = new Point4d((i%5)*100,0,(int(i/5))*100+100,1);
+				o.worldPosition = new Point4d((i%5)*200,0,(int(i/5))*200+100,1);
 				world.add(o);
 			}
+			var ooo:Object4d = new Object4d().copyFromObject4d(obj);
+			ooo.scale(new Vector3d(.1,.1,.1));
+			ooo.worldPosition = new Point4d(0,0,400,1);
+			world.add(ooo);
 		}
 		
+		private var view_ang:Number = 0;
 		public function onEnter(e:Event):void{
-//			var cos:Number = Math.cos(Util.deg_to_rad(ang_y));
-//			var sin:Number = Math.sin(Util.deg_to_rad(ang_y));
-//			if(++ang_y>=360)ang_y = 0;
-//			mrot.init([cos,0,-sin,0,
-//				0,1,0,0,
-//				sin,0,cos,0,
-//				0,0,0,1]);
-//			mrot.init([1,0,0,0,
-//				0,cos,sin,0,
-//				0,-sin,cos,0,
-//				0,0,0,1]);
-//			rm.transform_object4d(obj,mrot,Constants.TRANSFORM_LOCAL_TO_TRANS,false);			
-//			obj.toWorldPosition(Constants.TRANSFORM_TRANS_ONLY);
-			
-//			cam.removeBackfaces_obj(obj);
-			
 //			if(moveright){
-//				cam.pos.x +=10; 
+//				cam.pos.x +=10*Math.cos(-cam.dir.y); 
+//				cam.pos.z +=10*Math.sin(-cam.dir.y); 
 //			}
 //			if(moveleft){
-//				cam.pos.x -=10; 
+//				cam.pos.x -=10*Math.cos(-cam.dir.y); 
+//				cam.pos.z -=10*Math.sin(-cam.dir.y);
 //			}
-//			if(movefront){
-//				cam.pos.z +=10;
-//			}
-//			if(moveback){
-//				cam.pos.z -=10;
-//			}
-//			if(moveup){
-//				cam.pos.y +=10;
-//			} 
 			if(moveright){
-				cam.pos.x +=10*Math.cos(-cam.dir.y); 
-				cam.pos.z +=10*Math.sin(-cam.dir.y); 
+				cam.pos.x +=10;
 			}
 			if(moveleft){
-				cam.pos.x -=10*Math.cos(-cam.dir.y); 
-				cam.pos.z -=10*Math.sin(-cam.dir.y);
+				cam.pos.x -=10;
 			}
 			if(movefront){
 				cam.pos.z +=10;
@@ -187,10 +170,17 @@ package
 			if(movedown){
 				cam.pos.y -=10;
 			} 
-			++ang_y;
+			//++ang_y;
 			for each(var o:Object4d in world.objectArray){
 				o.rotationZ = ang_y;
 			}
+			if(++view_ang>360){
+				view_ang = 0;
+			}
+//			cam.pos.x = cameraDistance*Math.cos(Util.deg_to_rad(view_ang));
+//			cam.pos.y = cameraDistance*Math.sin(Util.deg_to_rad(view_ang));
+//			cam.pos.z = 2*cameraDistance*Math.sin(Util.deg_to_rad(view_ang));
+			//cam.pos.z = -cameraDistance*Math.cos(Util.deg_to_rad(view_ang))+400;
 			world.render();
 		}
 		

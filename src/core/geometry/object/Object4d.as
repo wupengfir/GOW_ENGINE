@@ -4,6 +4,7 @@ package core.geometry.object
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.poly.Poly4df;
 	import core.math.Point4d;
+	import core.math.Vector3d;
 	import core.math.Vector4d;
 	import core.render.RenderManager;
 	import core.util.Util;
@@ -37,6 +38,19 @@ package core.geometry.object
 		public var toWorlded:Boolean = false;
 		public function Object4d()
 		{
+			
+		}
+		
+		public function scale(v:Vector3d):void{
+			for (var i:int = 0; i < numVertices; i++) 
+			{
+				vlist_local[i].x *= v.x;
+				vlist_local[i].y *= v.y;
+				vlist_local[i].z *= v.z;
+				vlist_trans[i].x *= v.x;
+				vlist_trans[i].y *= v.y;
+				vlist_trans[i].z *= v.z;
+			}
 			
 		}
 		
