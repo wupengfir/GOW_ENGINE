@@ -15,7 +15,7 @@ package core.math
 			this.z = z;
 			this.w = w;
 		}
-		public function copyFromVector4d(p:Vector4d):void{
+		public function copyFromVector4d(p:Object):void{
 			this.x = p.x;
 			this.y = p.y;
 			this.z = p.z;

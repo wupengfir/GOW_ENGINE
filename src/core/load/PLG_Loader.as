@@ -99,7 +99,7 @@ package core.load
 				}
 			}else{
 				for each(var info:String in sa){
-					if(info.indexOf("#")!=-1||info==""){
+					if(info.indexOf("#")!=-1||splitString(info).length==0){
 						continue;
 					}
 					if(!inited){

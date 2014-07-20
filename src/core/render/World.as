@@ -65,6 +65,9 @@ package core.render
 			}
 			for each(var object:Object4d in objectArray){	
 				object.toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
+				if(object.rotation_world){
+					object.rotationY_world = object.ry_world;
+				}
 				if(cam.attr == Camera.CAMERA_TYPE_EULER){
 					cam.buildWorldToCameraMatrix_Euler();
 				}else{

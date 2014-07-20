@@ -16,7 +16,7 @@ package core.math
 			this.w = w;
 		}
 		
-		public function copyFromPoint4d(p:Point4d):Point4d{
+		public function copyFromPoint4d(p:Object):Point4d{
 			this.x = p.x;
 			this.y = p.y;
 			this.z = p.z;

@@ -1,4 +1,4 @@
-package
+package test
 {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
@@ -21,7 +21,7 @@ package
 	import core.render.World;
 	import core.util.Util;
 	
-	public class TestObject extends Sprite
+	public class Test7_2 extends Sprite
 	{
 		public var cam_pos:Point4d = new Point4d(0,0,-100,1);
 		public var cam_dir:Vector4d = new Vector4d(0,0,0,1);
@@ -35,10 +35,10 @@ package
 		public var rm:RenderManager = new RenderManager();
 		
 		private var world:World = new World();
-		public function TestObject()
+		public function Test7_2()
 		{
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
-			l.load("cube1.plg",new Vector3d(5,5,5),new Point4d(0,0,0,1));
+			l.load("marker1.plg",new Vector3d(50,50,50),new Point4d(0,0,0,1));
 			cam = new Camera();
 			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,100,500,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
@@ -135,58 +135,57 @@ package
 			}
 		}
 		
+		private var mv:Vector4d = new Vector4d();
+		private var mx:GowMatrix = new GowMatrix(44);
+		private var my:GowMatrix = new GowMatrix(44);
+		private var mz:GowMatrix = new GowMatrix(44);
 		public function onEnter(e:Event):void{
-//			var cos:Number = Math.cos(Util.deg_to_rad(ang_y));
-//			var sin:Number = Math.sin(Util.deg_to_rad(ang_y));
-//			if(++ang_y>=360)ang_y = 0;
-//			mrot.init([cos,0,-sin,0,
-//				0,1,0,0,
-//				sin,0,cos,0,
-//				0,0,0,1]);
-//			mrot.init([1,0,0,0,
-//				0,cos,sin,0,
-//				0,-sin,cos,0,
-//				0,0,0,1]);
-//			rm.transform_object4d(obj,mrot,Constants.TRANSFORM_LOCAL_TO_TRANS,false);			
-//			obj.toWorldPosition(Constants.TRANSFORM_TRANS_ONLY);
-			
-//			cam.removeBackfaces_obj(obj);
-			
-//			if(moveright){
-//				cam.pos.x +=10; 
-//			}
-//			if(moveleft){
-//				cam.pos.x -=10; 
-//			}
-//			if(movefront){
-//				cam.pos.z +=10;
-//			}
-//			if(moveback){
-//				cam.pos.z -=10;
-//			}
-//			if(moveup){
-//				cam.pos.y +=10;
-//			} 
+			mv.setProperty(0,0,0,1);
 			if(moveright){
-				cam.pos.x +=10*Math.cos(-cam.dir.y); 
-				cam.pos.z +=10*Math.sin(-cam.dir.y); 
+				mv.x +=10; 
 			}
 			if(moveleft){
-				cam.pos.x -=10*Math.cos(-cam.dir.y); 
-				cam.pos.z -=10*Math.sin(-cam.dir.y);
+				mv.x -=10; 
 			}
 			if(movefront){
-				cam.pos.z +=10;
+				mv.z +=10;
 			}
 			if(moveback){
-				cam.pos.z -=10;
+				mv.z -=10;
 			}
 			if(moveup){
-				cam.pos.y +=10;
+				mv.y +=10;
 			}
 			if(movedown){
-				cam.pos.y -=10;
+				mv.y -=10;
 			} 
+			var t_x:Number = cam.dir.x;
+			var t_y:Number = cam.dir.y;
+			var t_z:Number = cam.dir.z;
+			var cos_t:Number = Math.cos(t_x);
+			var sin_t:Number = Math.sin(t_x);
+			mx.init([1,0,0,0,
+				0,cos_t,sin_t,0,
+				0,-sin_t,cos_t,0,
+				0,0,0,1]);
+			cos_t = Math.cos(t_y);
+			sin_t = Math.sin(t_y);
+			my.init([cos_t,0,-sin_t,0,
+				0,1,0,0,
+				sin_t,0,cos_t,0,
+				0,0,0,1]);
+			cos_t = Math.cos(t_z);
+			sin_t = Math.sin(t_z);
+			mz.init([cos_t,sin_t,0,0,
+				-sin_t,cos_t,0,0,
+				0,0,1,0,
+				0,0,0,1]);
+			var temp:GowMatrix = my.multiply(mz) as GowMatrix;
+			temp = temp.multiply(mx);
+			mv.copyFromMatrix(temp.multiply(mv));
+			cam.pos.x += mv.x;
+			cam.pos.y += mv.y;
+			cam.pos.z += mv.z;
 			++ang_y;
 			for each(var o:Object4d in world.objectArray){
 				o.rotationZ = ang_y;

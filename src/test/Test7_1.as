@@ -1,4 +1,4 @@
-package
+package test
 {
 	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
@@ -19,7 +19,7 @@ package
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class Test extends Sprite
+	public class Test7_1 extends Sprite
 	{
 		
 		public var cam_pos:Point4d = new Point4d(0,0,-100,1);
@@ -33,7 +33,7 @@ package
 		public var rm:RenderManager = new RenderManager();
 		
 		private var world:World = new World();
-		public function Test()
+		public function Test7_1()
 		{
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_RENDERLIST);
 			l.load("cube2.plg",new Vector3d(10,10,10),new Point4d(0,0,0,1));

@@ -1,4 +1,4 @@
-package
+package test
 {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
@@ -154,18 +154,21 @@ package
 //			}
 			if(moveright){
 				cam.pos.x +=10;
+				//cam.target.x +=10;
 			}
 			if(moveleft){
 				cam.pos.x -=10;
 			}
 			if(movefront){
 				cam.pos.z +=10;
+				//cam.target.z +=10;
 			}
 			if(moveback){
 				cam.pos.z -=10;
 			}
 			if(moveup){
 				cam.pos.y +=10;
+				//cam.target.y +=10;
 			}
 			if(movedown){
 				cam.pos.y -=10;

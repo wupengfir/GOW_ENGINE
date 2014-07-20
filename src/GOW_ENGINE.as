@@ -9,6 +9,10 @@ package
 	
 	import monitor.MonitorKit;
 	
+	import test.Test7_2;
+	import test.Test7_3;
+	import test.Test7_4;
+	
 	[SWF( width = "950", height = "650", frameRate = "30", backgroundColor = "0x3366FF" )]
 	public class GOW_ENGINE extends Sprite
 	{
@@ -18,7 +22,7 @@ package
 		public function GOW_ENGINE()
 		{
 			//stage.frameRate = 60;
-			addChild(new Test7_3);
+			addChild(new Test7_4);
 			var monitor:MonitorKit = new MonitorKit(MonitorKit.MKMODE_T);
 			addChild(monitor);
 			

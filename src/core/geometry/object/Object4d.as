@@ -137,9 +137,15 @@ package core.geometry.object
 		public var rx:Number = 0;
 		public var ry:Number = 0;
 		public var rz:Number = 0;
+		public var rx_world:Number = 0;
+		public var ry_world:Number = 0;
+		public var rz_world:Number = 0;
 		public var oldx:Number = 0;
 		public var oldy:Number = 0;
 		public var oldz:Number = 0;
+		public var oldx_world:Number = 0;
+		public var oldy_world:Number = 0;
+		public var oldz_world:Number = 0;
 		public function set rotationX(rx:Number):void{
 			this.rx = rx;
 			var cos:Number = Math.cos(Util.deg_to_rad(rx-oldx));
@@ -168,6 +174,24 @@ package core.geometry.object
 				0,0,0,1]);
 			rm.transform_object4d(this,mrot,Constants.TRANSFORM_LOCAL_ONLY,false);
 			oldy = ry;
+		}
+		
+		public var rotation_world:Boolean = false;
+		
+		public function set rotationY_world(ry_world:Number):void{
+			this.ry_world = ry_world;
+			var cos:Number = Math.cos(Util.deg_to_rad(ry_world));
+			var sin:Number = Math.sin(Util.deg_to_rad(ry_world));
+			if(ry_world>=360){
+				ry_world = ry_world%360;
+			}			
+			var mrot:GowMatrix = new GowMatrix(44);
+			mrot.init([cos,0,-sin,0,
+				0,1,0,0,
+				sin,0,cos,0,
+				0,0,0,1]);
+			rm.transform_object4d(this,mrot,Constants.TRANSFORM_TRANS_ONLY,false);
+			oldy_world = ry_world;
 		}
 		
 		public function set rotationZ(rz:Number):void{
