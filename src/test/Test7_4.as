@@ -1,11 +1,5 @@
 package test
 {
-	import flash.display.Graphics;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	
 	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.object.Object4d;
@@ -21,6 +15,12 @@ package test
 	import core.render.World;
 	import core.util.Util;
 	
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	
 	public class Test7_4 extends Sprite
 	{
 		public var cam_pos:Point4d = new Point4d(0,0,-100,1);
@@ -30,6 +30,8 @@ package test
 		public var obj:Object4d = new Object4d();
 		public var poly:Poly4df;
 		public var poly_pos:Point4d = new Point4d(0,-100,300,1);
+		public var copy:Point4d = new Point4d(0,-100,300,1);
+		
 		public var mrot:GowMatrix = new GowMatrix(44);
 		public var ang_y:Number = 0;
 		public var rm:RenderManager = new RenderManager();
@@ -49,6 +51,7 @@ package test
 				stage.addEventListener(MouseEvent.MOUSE_MOVE,onMove);
 				stage.addEventListener(KeyboardEvent.KEY_UP,keyup);
 				stage.addEventListener(KeyboardEvent.KEY_DOWN,keydown);
+				stage.addEventListener(MouseEvent.CLICK,onClick);
 			});
 			world.camera = cam;
 			
@@ -144,15 +147,20 @@ package test
 				o.worldPosition = new Point4d((i%5)*100,0,(int(i/5))*100+100,1);
 				world.add(o);
 			}
-			obj.rotationX = 0;
-			obj.rotationY = 180;
+//			obj.rotationY = 180;
 			world.add(obj);
 		}
+		
+		private function onClick(e:MouseEvent):void{
+			obj.rotationY = 180;
+		}
+		
+		private var turning:int = 0;
 		
 		private var mv:Vector4d = new Vector4d();
 		private var obj_tv:Vector4d = new Vector4d();
 		private var my_obj:GowMatrix = new GowMatrix(44);
-		private var mx:GowMatrix = new GowMatrix(44);
+		private var mx1:GowMatrix = new GowMatrix(44);
 		private var my:GowMatrix = new GowMatrix(44);
 		private var mz:GowMatrix = new GowMatrix(44);
 		public function onEnter(e:Event):void{
@@ -179,17 +187,21 @@ package test
 			if(turnleft){
 				cam.dir.y -= .1;
 				obj_tv.y -= .1;
+				turning -= 2;
+				if(turning<-16)turning = -16;
 			}
 			if(turnright){
 				cam.dir.y += .1;
 				obj_tv.y += .1;
+				turning += 2;
+				if(turning>16)turning = 16;
 			} 
 			var t_x:Number = cam.dir.x;
 			var t_y:Number = cam.dir.y;
 			var t_z:Number = cam.dir.z;
 			var cos_t:Number = Math.cos(t_x);
 			var sin_t:Number = Math.sin(t_x);
-			mx.init([1,0,0,0,
+			mx1.init([1,0,0,0,
 				0,cos_t,sin_t,0,
 				0,-sin_t,cos_t,0,
 				0,0,0,1]);
@@ -206,28 +218,41 @@ package test
 				0,0,1,0,
 				0,0,0,1]);
 			var temp:GowMatrix = my.multiply(mz) as GowMatrix;
-			temp = temp.multiply(mx);
+			temp = temp.multiply(mx1);
 			mv.copyFromMatrix(temp.multiply(mv));
 			cam.pos.x += mv.x;
 			cam.pos.y += mv.y;
 			cam.pos.z += mv.z;
-			obj.worldPosition.x += mv.x;
-			obj.worldPosition.y += mv.y;
-			obj.worldPosition.z += mv.z;
-
-//			cos_t = Math.cos(obj_tv.y);
-//			sin_t = Math.sin(obj_tv.y);
-//			my_obj.init([cos_t,0,-sin_t,0,
-//				0,1,0,0,
-//				sin_t,0,cos_t,0,
-//				0,0,0,1]);
-//			obj.worldPosition.copyFromMatrix(my_obj.multiply(obj.worldPosition));
-			obj.rotation_world = true;
-			obj.ry_world = cam.dir.y*180/Math.PI;
-//			obj_tv.copyFromVector4d(obj.worldPosition);
-//			obj.worldPosition.x = obj.worldPosition.y = obj.worldPosition.z = 0;
+			
+			
+//			poly_pos.copyFromPoint4d(copy);
+//			obj.worldPosition.copyFromMatrix(my.multiply(poly_pos));
+//			obj.worldPosition.x += cam.pos.x; 
+//			obj.worldPosition.y += cam.pos.y;
+//			obj.worldPosition.z += cam.pos.z;
+			poly_pos.x = cam.pos.x + copy.x;
+			poly_pos.y = cam.pos.y + copy.y;
+			poly_pos.z = cam.pos.z + copy.z;
+			obj.worldPosition.copyFromMatrix(my.multiply(poly_pos));
+			if(!turnleft&&!turnright){
+				if(turning<0)turning += 2;
+				if(turning>0)turning -= 2;
+			}
+			obj.rotationY = cam.dir.y*180/Math.PI + 180 + turning;
+			
+			
+//			obj.worldPosition.x = cam.pos.x+300*Math.sin(cam.dir.y);
+//			obj.worldPosition.y = cam.pos.y-70;
+//			obj.worldPosition.z = cam.pos.z+300*Math.cos(cam.dir.y);
 //			obj.rotationY = cam.dir.y*180/Math.PI + 180;
-//			obj.worldPosition.copyFromPoint4d(obj_tv);
+			
+//			++ang_y;
+//			obj.rotationY = ang_y;
+			
+//			obj.rotation_world = true;
+//			obj.ry_world = cam.dir.y*180/Math.PI;
+			
+			
 			world.render();
 		}
 		

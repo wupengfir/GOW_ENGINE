@@ -147,6 +147,7 @@ package core.geometry.object
 		public var oldy_world:Number = 0;
 		public var oldz_world:Number = 0;
 		public function set rotationX(rx:Number):void{
+			if(numVertices == 0)return;
 			this.rx = rx;
 			var cos:Number = Math.cos(Util.deg_to_rad(rx-oldx));
 			var sin:Number = Math.sin(Util.deg_to_rad(rx-oldx));
@@ -161,6 +162,7 @@ package core.geometry.object
 		}
 		
 		public function set rotationY(ry:Number):void{
+			if(numVertices == 0)return;
 			this.ry = ry;
 			var cos:Number = Math.cos(Util.deg_to_rad(ry-oldy));
 			var sin:Number = Math.sin(Util.deg_to_rad(ry-oldy));
@@ -179,6 +181,7 @@ package core.geometry.object
 		public var rotation_world:Boolean = false;
 		
 		public function set rotationY_world(ry_world:Number):void{
+			if(numVertices == 0)return;
 			this.ry_world = ry_world;
 			var cos:Number = Math.cos(Util.deg_to_rad(ry_world));
 			var sin:Number = Math.sin(Util.deg_to_rad(ry_world));
