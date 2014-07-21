@@ -225,15 +225,15 @@ package test
 			cam.pos.z += mv.z;
 			
 			
-//			poly_pos.copyFromPoint4d(copy);
-//			obj.worldPosition.copyFromMatrix(my.multiply(poly_pos));
-//			obj.worldPosition.x += cam.pos.x; 
-//			obj.worldPosition.y += cam.pos.y;
-//			obj.worldPosition.z += cam.pos.z;
-			poly_pos.x = cam.pos.x + copy.x;
-			poly_pos.y = cam.pos.y + copy.y;
-			poly_pos.z = cam.pos.z + copy.z;
+			poly_pos.copyFromPoint4d(copy);
 			obj.worldPosition.copyFromMatrix(my.multiply(poly_pos));
+			obj.worldPosition.x += cam.pos.x; 
+			obj.worldPosition.y += cam.pos.y;
+			obj.worldPosition.z += cam.pos.z;
+//			poly_pos.x = cam.pos.x + copy.x;
+//			poly_pos.y = cam.pos.y + copy.y;
+//			poly_pos.z = cam.pos.z + copy.z;
+//			obj.worldPosition.copyFromMatrix(my.multiply(poly_pos));
 			if(!turnleft&&!turnright){
 				if(turning<0)turning += 2;
 				if(turning>0)turning -= 2;
