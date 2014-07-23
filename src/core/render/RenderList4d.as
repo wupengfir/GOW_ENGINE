@@ -10,7 +10,7 @@ package core.render
 		public var attr:int;
 		public var num_polys:int;
 		public var poly_vec:Vector.<Poly4df> = new Vector.<Poly4df>(Constants.RENDERLISTD_MAX_POLYS,true);
-		public var world_pos:Point4d;
+//		public var world_pos:Point4d;
 		public function RenderList4d()
 		{
 		}
@@ -29,7 +29,7 @@ package core.render
 			}
 		}
 		
-		public function toWorldPosition(coord_select:int = 2):void{
+		public function toWorldPosition(world_pos:Point4d,coord_select:int = 2):void{
 			var temp:Poly4df;
 			if(coord_select == Constants.TRANSFORM_LOCAL_TO_TRANS){				
 				for (var i:int = 0; i < num_polys; i++) 

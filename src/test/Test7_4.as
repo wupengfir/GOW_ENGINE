@@ -144,7 +144,7 @@ package test
 			for (var i:int = 0; i < 10; i++) 
 			{
 				var o:Object4d = new Object4d().copyFromObject4d(obj);
-				o.worldPosition = new Point4d((i%5)*100,0,(int(i/5))*100+100,1);
+				o.worldPosition = new Point4d((i%5)*200,0,(int(i/5))*200+100,1);
 				world.add(o);
 			}
 //			obj.rotationY = 180;
@@ -239,7 +239,6 @@ package test
 				if(turning>0)turning -= 2;
 			}
 			obj.rotationY = cam.dir.y*180/Math.PI + 180 + turning;
-			
 			
 //			obj.worldPosition.x = cam.pos.x+300*Math.sin(cam.dir.y);
 //			obj.worldPosition.y = cam.pos.y-70;

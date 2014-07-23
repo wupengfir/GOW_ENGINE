@@ -91,7 +91,7 @@ package test
 						sin,0,cos,0,
 						0,0,0,1]);
 			rm.transform_renderList(renderList,mrot,Constants.TRANSFORM_LOCAL_TO_TRANS);
-			renderList.toWorldPosition(poly_pos,Constants.TRANSFORM_TRANS_ONLY);
+			renderList.toWorldPosition(new Point4d(0,0,200,0),Constants.TRANSFORM_TRANS_ONLY);
 //			cam.initWorldToCameraMatrix_Euler();
 //			rm.transform_renderList(renderList,cam.mcam,Constants.TRANSFORM_TRANS_ONLY);
 //			cam.cameraToPerspective_renderlist(renderList);

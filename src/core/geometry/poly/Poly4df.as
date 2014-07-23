@@ -36,7 +36,7 @@ package core.geometry.poly
 			var x1:Number = tvlist[1].x-tvlist[0].x;
 			var y1:Number = tvlist[1].y-tvlist[0].y;
 			var z1:Number = tvlist[1].z-tvlist[0].z;
-			var w1:Number = Math.sqrt(x1*x1+y1*y1+z1*z1);;
+			var w1:Number = Math.sqrt(x1*x1+y1*y1+z1*z1);
 			var u:Vector4d = new Vector4d(x1/w1,y1/w1,z1/w1,1);
 			var x2:Number = tvlist[2].x-tvlist[0].x;
 			var y2:Number = tvlist[2].y-tvlist[0].y;

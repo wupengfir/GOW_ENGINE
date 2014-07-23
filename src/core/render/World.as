@@ -110,14 +110,20 @@ package core.render
 						temp.state&Constants.POLY4D_STATE_CLIPPED||
 						temp.state&Constants.POLY4D_STATE_BACKFACE)
 						continue;
-					for (var j:int = 0; j < 3; j++) 
-					{
-						g.lineStyle(1,0,1);
-						g.moveTo(temp.tvlist[j].x,temp.tvlist[j].y);
-						var a:int = j == 2?0:j+1;
-						g.lineTo(temp.tvlist[a].x,temp.tvlist[a].y);
-					}
-					
+					g.lineStyle(1,0,1);
+//					for (var j:int = 0; j < 3; j++) 
+//					{
+//						
+//						g.moveTo(temp.tvlist[j].x,temp.tvlist[j].y);
+//						var a:int = j == 2?0:j+1;
+//						g.lineTo(temp.tvlist[a].x,temp.tvlist[a].y);
+//					}
+					g.beginFill(0x666666, 1);
+					g.moveTo(temp.tvlist[0].x,temp.tvlist[0].y);
+					g.lineTo(temp.tvlist[1].x,temp.tvlist[1].y);
+					g.lineTo(temp.tvlist[2].x,temp.tvlist[2].y);
+					g.lineTo(temp.tvlist[0].x,temp.tvlist[0].y);
+					g.endFill();
 				}
 				
 			}

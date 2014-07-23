@@ -134,7 +134,10 @@ package test
 				world.add(o);
 			}
 		}
-		
+		private var mv:Vector4d = new Vector4d();
+		private var obj_tv:Vector4d = new Vector4d();
+		private var my_obj:GowMatrix = new GowMatrix(44);
+		private var mx1:GowMatrix = new GowMatrix(44);
 		private var mv:Vector4d = new Vector4d();
 		private var mx:GowMatrix = new GowMatrix(44);
 		private var my:GowMatrix = new GowMatrix(44);

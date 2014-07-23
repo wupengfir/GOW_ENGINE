@@ -143,37 +143,61 @@ package test
 		}
 		
 		private var view_ang:Number = 0;
+		private var mv:Vector4d = new Vector4d();
+		private var obj_tv:Vector4d = new Vector4d();
+		private var my_obj:GowMatrix = new GowMatrix(44);
+		private var mx1:GowMatrix = new GowMatrix(44);
+		private var my:GowMatrix = new GowMatrix(44);
+		private var mz:GowMatrix = new GowMatrix(44);
 		public function onEnter(e:Event):void{
-//			if(moveright){
-//				cam.pos.x +=10*Math.cos(-cam.dir.y); 
-//				cam.pos.z +=10*Math.sin(-cam.dir.y); 
-//			}
-//			if(moveleft){
-//				cam.pos.x -=10*Math.cos(-cam.dir.y); 
-//				cam.pos.z -=10*Math.sin(-cam.dir.y);
-//			}
+			mv.setProperty(0,0,0,1);
+			obj_tv.setProperty(0,0,0,1);
 			if(moveright){
-				cam.pos.x +=10;
-				//cam.target.x +=10;
+				mv.x +=10; 
 			}
 			if(moveleft){
-				cam.pos.x -=10;
+				mv.x -=10; 
 			}
 			if(movefront){
-				cam.pos.z +=10;
-				//cam.target.z +=10;
+				mv.z +=10;
 			}
 			if(moveback){
-				cam.pos.z -=10;
+				mv.z -=10;
 			}
 			if(moveup){
-				cam.pos.y +=10;
-				//cam.target.y +=10;
+				mv.y +=10;
 			}
 			if(movedown){
-				cam.pos.y -=10;
-			} 
-			//++ang_y;
+				mv.y -=10;
+			}
+			var t_x:Number = cam.dir.x;
+			var t_y:Number = cam.dir.y;
+			var t_z:Number = cam.dir.z;
+			var cos_t:Number = Math.cos(t_x);
+			var sin_t:Number = Math.sin(t_x);
+			mx1.init([1,0,0,0,
+				0,cos_t,sin_t,0,
+				0,-sin_t,cos_t,0,
+				0,0,0,1]);
+			cos_t = Math.cos(t_y);
+			sin_t = Math.sin(t_y);
+			my.init([cos_t,0,-sin_t,0,
+				0,1,0,0,
+				sin_t,0,cos_t,0,
+				0,0,0,1]);
+			cos_t = Math.cos(t_z);
+			sin_t = Math.sin(t_z);
+			mz.init([cos_t,sin_t,0,0,
+				-sin_t,cos_t,0,0,
+				0,0,1,0,
+				0,0,0,1]);
+			var temp:GowMatrix = my.multiply(mz) as GowMatrix;
+			temp = temp.multiply(mx1);
+			mv.copyFromMatrix(temp.multiply(mv));
+			cam.pos.x += mv.x;
+			cam.pos.y += mv.y;
+			cam.pos.z += mv.z;
+			
 			for each(var o:Object4d in world.objectArray){
 				o.rotationZ = ang_y;
 			}
