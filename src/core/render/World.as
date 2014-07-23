@@ -3,7 +3,10 @@ package core.render
 	import core.Constants;
 	import core.geometry.object.Object4d;
 	import core.geometry.poly.Poly4df;
+	import core.light.Light;
+	import core.light.LightManager;
 	import core.math.Point4d;
+	import core.util.Util;
 	
 	import flash.display.Graphics;
 	import flash.display.Sprite;
@@ -26,11 +29,9 @@ package core.render
 		public function add(o:Object):void{
 			if(o is RenderList4d){
 				renderListArray.push(o);
-				//(o as RenderList4d).toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
 			}
 			if(o is Object4d){
 				objectArray.push(o);
-				//(o as Object4d).toWorldPosition(Constants.TRANSFORM_LOCAL_TO_TRANS);
 			}
 		}
 		
@@ -39,7 +40,32 @@ package core.render
 					obj.attr&Constants.OBJECT_STATE_CLIPPED||
 						!(obj.attr&Constants.OBJECT_STATE_VISIBLE))
 				return;
-			
+			var r_sum:uint = 0;
+			var g_sum:uint = 0;
+			var b_sum:uint = 0;
+			var r_base:uint = 0;
+			var g_base:uint = 0;
+			var b_base:uint = 0;
+			var poly:Poly4df;
+			for (var j:int = 0; j < obj.numPolys; j++) 
+			{
+				poly = obj.poly_vec[j];
+				if(poly == null || !poly.avaliable())continue;
+				r_base = poly.color>>16&0x000000ff;
+				g_base = poly.color>>8&0x000000ff;
+				b_base = poly.color&0x000000ff;
+				for (var i:int = 0; i < LightManager.numLights; i++) 
+				{
+					var light:Light = LightManager.lightList[i];
+					if(!light.state)continue;
+					if(light.attr&Light.LIGHTV1_ATTR_AMBIENT){					
+						r_sum += light.c_ambient*r_base/256;
+						g_sum += light.c_ambient*g_base/256;
+						b_sum += light.c_ambient*b_base/256;
+					}
+				}
+				poly.color = Util.ARGB(0xff,r_sum,g_sum,b_sum);
+			}			
 		}
 		
 		public function render(back:Boolean = false,cull:Boolean = true):void{
@@ -91,6 +117,7 @@ package core.render
 				if(object.state == Constants.OBJECT_STATE_CLIPPED){
 					continue;
 				}
+				shaderObject(object);
 				rm.transform_object4d(object,cam.mcam,Constants.TRANSFORM_TRANS_ONLY,false);
 				cam.cameraToPerspective_object(object);
 				cam.perspectiveToScreen_obj(object);
@@ -104,12 +131,12 @@ package core.render
 						temp.state&Constants.POLY4D_STATE_BACKFACE)
 						continue;
 					g.lineStyle(1,0,1);
-					//g.beginFill(0x666666, 1);
+					g.beginFill(temp.color, 1);
 					g.moveTo(temp.tvlist[0].x,temp.tvlist[0].y);
 					g.lineTo(temp.tvlist[1].x,temp.tvlist[1].y);
 					g.lineTo(temp.tvlist[2].x,temp.tvlist[2].y);
 					g.lineTo(temp.tvlist[0].x,temp.tvlist[0].y);
-					//g.endFill();
+					g.endFill();
 				}
 				
 			}

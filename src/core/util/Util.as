@@ -7,7 +7,7 @@ package core.util
 			return a*Math.PI/180;
 		}
 		
-		public static function ARGB(a:int,r:int,g:Number,b:Number):uint{
+		public static function ARGB(a:uint,r:uint,g:uint,b:uint):uint{
 			a = a<0?0:a;a = a>255?255:a;
 			r = r<0?0:r;r = r>255?255:r;
 			g = g<0?0:g;g = g>255?255:g;

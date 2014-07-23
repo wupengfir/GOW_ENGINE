@@ -5,6 +5,8 @@ package test
 	import core.geometry.object.Object4d;
 	import core.geometry.poly.Poly4d;
 	import core.geometry.poly.Poly4df;
+	import core.light.Light;
+	import core.light.LightManager;
 	import core.load.PLG_Loader;
 	import core.math.Point4d;
 	import core.math.Vector3d;
@@ -21,7 +23,7 @@ package test
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	
-	public class Test7_4 extends Sprite
+	public class Test8_1 extends Sprite
 	{
 		public var cam_pos:Point4d = new Point4d(0,0,-100,1);
 		public var cam_dir:Vector4d = new Vector4d(0,0,0,1);
@@ -37,7 +39,7 @@ package test
 		public var rm:RenderManager = new RenderManager();
 		
 		private var world:World = new World();
-		public function Test7_4()
+		public function Test8_1()
 		{
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
 			l.load("tower1.plg",new Vector3d(1,1,1),new Point4d(0,0,0,1));
@@ -138,6 +140,7 @@ package test
 			flag = false;
 		}
 		
+		private var light:Light = new Light();
 		private function onComplete(e:Event):void{
 			obj.addVertices(e.target.objectVerticesData);
 			obj.fillPolyVec(e.target.color);
@@ -147,8 +150,11 @@ package test
 				o.worldPosition = new Point4d((i%5)*200,0,(int(i/5))*200+100,1);
 				world.add(o);
 			}
-//			obj.rotationY = 180;
+			//			obj.rotationY = 180;
 			world.add(obj);
+			LightManager.addLight(light);
+			light.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,0x00ffffff,0,0,0,0,0,null,null,0,0,0);
+			
 		}
 		
 		private function onClick(e:MouseEvent):void{
@@ -230,26 +236,26 @@ package test
 			obj.worldPosition.x += cam.pos.x; 
 			obj.worldPosition.y += cam.pos.y;
 			obj.worldPosition.z += cam.pos.z;
-//			poly_pos.x = cam.pos.x + copy.x;
-//			poly_pos.y = cam.pos.y + copy.y;
-//			poly_pos.z = cam.pos.z + copy.z;
-//			obj.worldPosition.copyFromMatrix(my.multiply(poly_pos));
+			//			poly_pos.x = cam.pos.x + copy.x;
+			//			poly_pos.y = cam.pos.y + copy.y;
+			//			poly_pos.z = cam.pos.z + copy.z;
+			//			obj.worldPosition.copyFromMatrix(my.multiply(poly_pos));
 			if(!turnleft&&!turnright){
 				if(turning<0)turning += 2;
 				if(turning>0)turning -= 2;
 			}
 			obj.rotationY = cam.dir.y*180/Math.PI + 180 + turning;
 			
-//			obj.worldPosition.x = cam.pos.x+300*Math.sin(cam.dir.y);
-//			obj.worldPosition.y = cam.pos.y-70;
-//			obj.worldPosition.z = cam.pos.z+300*Math.cos(cam.dir.y);
-//			obj.rotationY = cam.dir.y*180/Math.PI + 180;
+			//			obj.worldPosition.x = cam.pos.x+300*Math.sin(cam.dir.y);
+			//			obj.worldPosition.y = cam.pos.y-70;
+			//			obj.worldPosition.z = cam.pos.z+300*Math.cos(cam.dir.y);
+			//			obj.rotationY = cam.dir.y*180/Math.PI + 180;
 			
-//			++ang_y;
-//			obj.rotationY = ang_y;
+			//			++ang_y;
+			//			obj.rotationY = ang_y;
 			
-//			obj.rotation_world = true;
-//			obj.ry_world = cam.dir.y*180/Math.PI;
+			//			obj.rotation_world = true;
+			//			obj.ry_world = cam.dir.y*180/Math.PI;
 			
 			
 			world.render(true);

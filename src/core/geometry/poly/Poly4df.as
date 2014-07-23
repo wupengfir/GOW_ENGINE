@@ -32,6 +32,14 @@ package core.geometry.poly
 			tvlist[2] = p3;
 		}
 		
+		public function avaliable():Boolean{
+			if(!(this.state&Constants.POLY4D_STATE_ACTIVE)||
+				this.state&Constants.POLY4D_STATE_CLIPPED||
+				this.state&Constants.POLY4D_STATE_BACKFACE)
+			return false;
+			return true;
+		}
+		
 		public function calculateNormalVector():void{
 			var x1:Number = tvlist[1].x-tvlist[0].x;
 			var y1:Number = tvlist[1].y-tvlist[0].y;

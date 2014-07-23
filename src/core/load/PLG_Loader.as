@@ -17,6 +17,7 @@ package core.load
 		private var loader:URLLoader = new URLLoader;
 		private var scale:Vector3d;
 		private var pos:Point4d;
+		public  var color:Array = new Array;
 		public static const LOAD_COMPLETE:String = "complete";
 		public static const TYPE_OBJECT:int = 0;
 		public static const TYPE_RENDERLIST:int = 1;
@@ -90,6 +91,7 @@ package core.load
 						var poly:Poly4df = new Poly4df();
 						poly.state = Constants.POLY4D_STATE_ACTIVE;
 						poly.attr = 0;
+						poly.color = uint(values[0]);
 						poly.vlist[0] = new Point4d().copyFromPoint4d(vertexList[values[2]] as Point4d);
 						poly.vlist[1] = new Point4d().copyFromPoint4d(vertexList[values[3]] as Point4d);
 						poly.vlist[2] = new Point4d().copyFromPoint4d(vertexList[values[4]] as Point4d);
@@ -124,6 +126,7 @@ package core.load
 //						poly.vlist[1] = new Point4d().copyFromPoint4d(vertexList[values[3]] as Point4d);
 //						poly.vlist[2] = new Point4d().copyFromPoint4d(vertexList[values[4]] as Point4d);
 //						polyData.push(poly);
+						color.push(uint(values[0]));
 						objectVerticesData.push(new Point4d().copyFromPoint4d(vertexList[values[2]] as Point4d));
 						objectVerticesData.push(new Point4d().copyFromPoint4d(vertexList[values[3]] as Point4d));
 						objectVerticesData.push(new Point4d().copyFromPoint4d(vertexList[values[4]] as Point4d));

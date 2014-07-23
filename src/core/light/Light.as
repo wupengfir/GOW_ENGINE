@@ -34,14 +34,13 @@ package core.light
 		{
 		}
 		
-		public function init(index:int,state:int,attr:int,
+		public function init(state:int,attr:int,
 							 c_ambient:uint,c_diffuse:uint,c_specular:uint,
 							kc:Number,kl:Number,kq:Number,pos:Point4d,dir:Vector4d,
 							spot_inner:Number,spot_outer:Number,pf:Number):void{
-			if(index<0||index>LightManager.LIGHTV1_MAX_LIGHTS){
-				return;
-			}
-			this.id = index;
+//			if(index<0||index>LightManager.LIGHTV1_MAX_LIGHTS){
+//				return;
+//			}
 			this.state = state;
 			this.attr = attr;
 			this.c_ambient = c_ambient;

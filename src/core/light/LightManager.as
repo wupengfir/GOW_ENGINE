@@ -11,15 +11,12 @@ package core.light
 		}
 		
 		public static function addLight(m:Light):void{
+			m.id = numLights;
 			lightList[numLights] = m;
 			numLights++;
 		}
 		
-		public static function resetMaterials():void{
-			for (var i:int = 0; i < numLights; i++) 
-			{
-				lightList[i].dispose();
-			}
+		public static function resetLights():void{
 			numLights = 0;
 		}
 		
