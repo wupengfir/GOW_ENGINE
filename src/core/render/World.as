@@ -1,5 +1,8 @@
 package core.render
 {
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	
 	import core.Constants;
 	import core.geometry.object.Object4d;
 	import core.geometry.poly.Poly4df;
@@ -7,9 +10,6 @@ package core.render
 	import core.light.LightManager;
 	import core.math.Point4d;
 	import core.util.Util;
-	
-	import flash.display.Graphics;
-	import flash.display.Sprite;
 
 	public class World extends Sprite
 	{
@@ -36,6 +36,7 @@ package core.render
 		}
 		
 		public function shaderObject(obj:Object4d):void{
+			if(LightManager.numLights == 0)return;
 			if(!(obj.attr&Constants.OBJECT_STATE_ACTIVE)||
 					obj.attr&Constants.OBJECT_STATE_CLIPPED||
 						!(obj.attr&Constants.OBJECT_STATE_VISIBLE))
@@ -46,25 +47,35 @@ package core.render
 			var r_base:uint = 0;
 			var g_base:uint = 0;
 			var b_base:uint = 0;
+			var r_a:uint = 0;
+			var g_a:uint = 0;
+			var b_a:uint = 0;
 			var poly:Poly4df;
 			for (var j:int = 0; j < obj.numPolys; j++) 
 			{
+				r_sum = 0;
+				g_sum = 0;
+				b_sum = 0;
 				poly = obj.poly_vec[j];
 				if(poly == null || !poly.avaliable())continue;
 				r_base = poly.color>>16&0x000000ff;
 				g_base = poly.color>>8&0x000000ff;
 				b_base = poly.color&0x000000ff;
+				
 				for (var i:int = 0; i < LightManager.numLights; i++) 
 				{
 					var light:Light = LightManager.lightList[i];
+					r_a = light.c_ambient>>16&0x000000ff;
+					g_a = light.c_ambient>>8&0x000000ff;
+					b_a = light.c_ambient&0x000000ff;
 					if(!light.state)continue;
 					if(light.attr&Light.LIGHTV1_ATTR_AMBIENT){					
-						r_sum += light.c_ambient*r_base/256;
-						g_sum += light.c_ambient*g_base/256;
-						b_sum += light.c_ambient*b_base/256;
+						r_sum += r_a*r_base/256;
+						g_sum += g_a*g_base/256;
+						b_sum += b_a*b_base/256;
 					}
 				}
-				poly.color = Util.ARGB(0xff,r_sum,g_sum,b_sum);
+				poly.color_trans = Util.ARGB(0xff,r_sum,g_sum,b_sum);
 			}			
 		}
 		
@@ -131,7 +142,7 @@ package core.render
 						temp.state&Constants.POLY4D_STATE_BACKFACE)
 						continue;
 					g.lineStyle(1,0,1);
-					g.beginFill(temp.color, 1);
+					g.beginFill(temp.color_trans, 1);
 					g.moveTo(temp.tvlist[0].x,temp.tvlist[0].y);
 					g.lineTo(temp.tvlist[1].x,temp.tvlist[1].y);
 					g.lineTo(temp.tvlist[2].x,temp.tvlist[2].y);

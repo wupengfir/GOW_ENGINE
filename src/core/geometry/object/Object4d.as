@@ -90,6 +90,7 @@ package core.geometry.object
 					var tempPoly:Poly4df = new Poly4df();
 					if(colors){
 						tempPoly.color = colors[Math.floor(i/3)];
+						tempPoly.color_trans = colors[Math.floor(i/3)];
 					}
 					
 					tempPoly.addPoint(vlist_trans[i],vlist_trans[i+1],vlist_trans[i+2]);
@@ -103,6 +104,7 @@ package core.geometry.object
 					var tempPoly:Poly4df = new Poly4df();
 					if(colors){
 						tempPoly.color = colors[Math.floor(i/3)];
+						tempPoly.color_trans = colors[Math.floor(i/3)];
 					}
 					tempPoly.addPoint(vlist_local[i],vlist_local[i+1],vlist_local[i+2]);
 					poly_vec[index] = tempPoly;

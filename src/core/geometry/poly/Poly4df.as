@@ -9,6 +9,7 @@ package core.geometry.poly
 		public var state:int;
 		public var attr:int;
 		public var color:uint;
+		public var color_trans:uint;
 		public var vlist:Vector.<Point4d> = new Vector.<Point4d>(3);
 		public var tvlist:Vector.<Point4d> = new Vector.<Point4d>(3);
 		public var normalVector:Vector4d = new Vector4d();

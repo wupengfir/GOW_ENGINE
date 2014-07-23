@@ -1,12 +1,12 @@
 package
 {
-	import core.geometry.matrix.GowMatrix;
-	import core.load.PLG_Loader;
-	import core.math.Vector4d;
-	
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
+	
+	import core.geometry.matrix.GowMatrix;
+	import core.load.PLG_Loader;
+	import core.math.Vector4d;
 	
 	import monitor.MonitorKit;
 	
@@ -14,6 +14,7 @@ package
 	import test.Test7_2;
 	import test.Test7_3;
 	import test.Test7_4;
+	import test.Test8_1;
 	
 	[SWF( width = "950", height = "650", frameRate = "30", backgroundColor = "0x3366FF" )]
 	public class GOW_ENGINE extends Sprite
@@ -24,7 +25,7 @@ package
 		public function GOW_ENGINE()
 		{
 			//stage.frameRate = 60;
-			addChild(new Test7_4);
+			addChild(new Test8_1);
 			var monitor:MonitorKit = new MonitorKit(MonitorKit.MKMODE_T);
 			addChild(monitor);
 			

@@ -49,7 +49,9 @@ package core.light
 			this.kc = kc;
 			this.kl = kl;
 			this.kq = kq;
+			if(pos)
 			this.pos.copyFromPoint4d(pos);
+			if(dir)
 			this.dir.copyFromVector4d(dir);
 			this.spot_inner = spot_inner;
 			this.spot_outer = spot_outer;

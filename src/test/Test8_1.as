@@ -153,7 +153,7 @@ package test
 			//			obj.rotationY = 180;
 			world.add(obj);
 			LightManager.addLight(light);
-			light.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,0x00ffffff,0,0,0,0,0,null,null,0,0,0);
+			light.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,0x00ff00ff,0,0,0,0,0,null,null,0,0,0);
 			
 		}
 		
