@@ -38,7 +38,7 @@ package core.geometry.object
 		public var toWorlded:Boolean = false;
 		public function Object4d()
 		{
-			
+			this.attr = Constants.OBJECT_STATE_ACTIVE|Constants.OBJECT_STATE_VISIBLE;
 		}
 		
 		public function scale(v:Vector3d):void{

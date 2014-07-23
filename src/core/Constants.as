@@ -19,6 +19,10 @@ package core
 		public static const POLY4D_STATE_CLIPPED:int = 0x0002;
 		public static const POLY4D_STATE_BACKFACE:int = 0x0004;
 		
+		public static const OBJECT_STATE_ACTIVE:int = 0x0001;
+		public static const OBJECT_STATE_CLIPPED:int = 0x0002;
+		public static const OBJECT_STATE_VISIBLE:int = 0x0004;
+		
 		public static const TRANSFORM_LOCAL_ONLY:int = 0;
 		public static const TRANSFORM_TRANS_ONLY:int = 1;
 		public static const TRANSFORM_LOCAL_TO_TRANS:int = 2;

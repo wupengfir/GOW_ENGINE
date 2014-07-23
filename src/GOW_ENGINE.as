@@ -24,7 +24,7 @@ package
 		public function GOW_ENGINE()
 		{
 			//stage.frameRate = 60;
-			addChild(new Test7_1);
+			addChild(new Test7_4);
 			var monitor:MonitorKit = new MonitorKit(MonitorKit.MKMODE_T);
 			addChild(monitor);
 			

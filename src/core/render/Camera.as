@@ -253,19 +253,19 @@ package core.render
 			var temp:Point4d = new Point4d().copyFromMatrix(mcam.multiply(obj.worldPosition));
 			if(cullType&Constants.CULL_Z){
 				if((temp.z - obj.maxRadius)>far_clip_z||(temp.z + obj.maxRadius)<near_clip_z){
-					obj.state = Constants.POLY4D_STATE_CLIPPED;
+					obj.state = Constants.OBJECT_STATE_CLIPPED;
 				}
 			}
 			if(cullType&Constants.CULL_X){
 				var ztest:Number = 0.5*viewplane_width*temp.z/view_dist;
 				if((temp.x - obj.maxRadius)>ztest||(temp.x + obj.maxRadius)<-ztest){
-					obj.state = Constants.POLY4D_STATE_CLIPPED;
+					obj.state = Constants.OBJECT_STATE_CLIPPED;
 				}
 			}
 			if(cullType&Constants.CULL_Y){
 				var ztest:Number = 0.5*viewport_height*temp.z/view_dist;
 				if((temp.y - obj.maxRadius)>ztest||(temp.y + obj.maxRadius)<-ztest){
-					obj.state = Constants.POLY4D_STATE_CLIPPED;
+					obj.state = Constants.OBJECT_STATE_CLIPPED;
 				}
 			}
 		}

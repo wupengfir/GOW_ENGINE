@@ -40,9 +40,9 @@ package test
 		public function Test7_4()
 		{
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
-			l.load("tank1.plg",new Vector3d(1,1,1),new Point4d(0,0,0,1));
+			l.load("tower1.plg",new Vector3d(1,1,1),new Point4d(0,0,0,1));
 			cam = new Camera();
-			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,300,500,90,950,650);			
+			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,50,500,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
 			addEventListener(Event.ADDED_TO_STAGE,function(e:Event):void{
 				addEventListener(Event.ENTER_FRAME,onEnter);
@@ -252,7 +252,7 @@ package test
 //			obj.ry_world = cam.dir.y*180/Math.PI;
 			
 			
-			world.render();
+			world.render(true);
 		}
 		
 	}

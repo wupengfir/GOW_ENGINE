@@ -43,7 +43,7 @@ package core.geometry.poly
 			var z2:Number = tvlist[2].z-tvlist[0].z;
 			var w2:Number = Math.sqrt(x2*x2+y2*y2+z2*z2);;
 			var v:Vector4d = new Vector4d(x2/w2,y2/w2,z2/w2,1);
-			normalVector.x = u.y*u.z-v.y*v.z;
+			normalVector.x = u.y*v.z-v.y*u.z;
 			normalVector.y = u.z*v.x-u.x*v.z;
 			normalVector.z = u.x*v.y-v.x*u.y;
 			normalVector.w = 1;
