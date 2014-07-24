@@ -1,15 +1,17 @@
 package core.render
 {
-	import flash.display.Graphics;
-	import flash.display.Sprite;
-	
 	import core.Constants;
 	import core.geometry.object.Object4d;
 	import core.geometry.poly.Poly4df;
 	import core.light.Light;
 	import core.light.LightManager;
 	import core.math.Point4d;
+	import core.math.Vector4d;
 	import core.util.Util;
+	
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.geom.Point;
 
 	public class World extends Sprite
 	{
@@ -65,15 +67,44 @@ package core.render
 				for (var i:int = 0; i < LightManager.numLights; i++) 
 				{
 					var light:Light = LightManager.lightList[i];
-					r_a = light.c_ambient>>16&0x000000ff;
-					g_a = light.c_ambient>>8&0x000000ff;
-					b_a = light.c_ambient&0x000000ff;
 					if(!light.state)continue;
-					if(light.attr&Light.LIGHTV1_ATTR_AMBIENT){					
+					if(light.attr & Light.LIGHTV1_ATTR_AMBIENT){
+						r_a = light.c_ambient>>16&0x000000ff;
+						g_a = light.c_ambient>>8&0x000000ff;
+						b_a = light.c_ambient&0x000000ff;										
 						r_sum += r_a*r_base/256;
 						g_sum += g_a*g_base/256;
 						b_sum += b_a*b_base/256;
+					}else if(light.attr & Light.LIGHTV1_ATTR_INFINITE){
+						var dp:Number = light.dir.x*poly.normalVector.x+light.dir.y*poly.normalVector.y +light.dir.z*poly.normalVector.z;
+						if(dp>0){
+							r_a = light.c_diffuse>>16&0x000000ff;
+							g_a = light.c_diffuse>>8&0x000000ff;
+							b_a = light.c_diffuse&0x000000ff;
+							r_sum += r_a*r_base*dp/256;
+							g_sum += g_a*g_base*dp/256;
+							b_sum += b_a*b_base*dp/256;
+						}
+					}else if(light.attr & Light.LIGHTV1_ATTR_POINT){
+						var dist:Number = Util.distance(light.pos,poly.tvlist[0]);
+						var vec:Vector4d = new Vector4d().build(poly.tvlist[0],light.pos);
+						vec.normalize();
+						var dp:Number = vec.x*poly.normalVector.x+vec.y*poly.normalVector.y +vec.z*poly.normalVector.z;
+						var atten:Number = light.kc + light.kl*dist + light.kq*dist*dist;
+						if(dp>0){
+							r_a = light.c_specular>>16&0x000000ff;
+							g_a = light.c_specular>>8&0x000000ff;
+							b_a = light.c_specular&0x000000ff;
+							r_sum += r_a*r_base*dp/(256*dist*atten);
+							g_sum += g_a*g_base*dp/(256*dist*atten);
+							b_sum += b_a*b_base*dp/(256*dist*atten);
+						}
+					}else if(light.attr & Light.LIGHTV1_ATTR_SPOTLIGHT_SIMPLE){
+						
+					}else if(light.attr & Light.LIGHTV1_ATTR_SPOTLIGHT_COMPLICATE){
+						
 					}
+					
 				}
 				poly.color_trans = Util.ARGB(0xff,r_sum,g_sum,b_sum);
 			}			
@@ -141,7 +172,7 @@ package core.render
 						temp.state&Constants.POLY4D_STATE_CLIPPED||
 						temp.state&Constants.POLY4D_STATE_BACKFACE)
 						continue;
-					g.lineStyle(1,0,1);
+					g.lineStyle(1,0,0);
 					g.beginFill(temp.color_trans, 1);
 					g.moveTo(temp.tvlist[0].x,temp.tvlist[0].y);
 					g.lineTo(temp.tvlist[1].x,temp.tvlist[1].y);

@@ -45,17 +45,18 @@ package core.geometry.poly
 			var x1:Number = tvlist[1].x-tvlist[0].x;
 			var y1:Number = tvlist[1].y-tvlist[0].y;
 			var z1:Number = tvlist[1].z-tvlist[0].z;
-			var w1:Number = Math.sqrt(x1*x1+y1*y1+z1*z1);
-			var u:Vector4d = new Vector4d(x1/w1,y1/w1,z1/w1,1);
+			//var w1:Number = Math.sqrt(x1*x1+y1*y1+z1*z1);
+			var u:Vector4d = new Vector4d(x1,y1,z1,1);
 			var x2:Number = tvlist[2].x-tvlist[0].x;
 			var y2:Number = tvlist[2].y-tvlist[0].y;
 			var z2:Number = tvlist[2].z-tvlist[0].z;
-			var w2:Number = Math.sqrt(x2*x2+y2*y2+z2*z2);;
-			var v:Vector4d = new Vector4d(x2/w2,y2/w2,z2/w2,1);
+			//var w2:Number = Math.sqrt(x2*x2+y2*y2+z2*z2);;
+			var v:Vector4d = new Vector4d(x2,y2,z2,1);
 			normalVector.x = u.y*v.z-v.y*u.z;
 			normalVector.y = u.z*v.x-u.x*v.z;
 			normalVector.z = u.x*v.y-v.x*u.y;
 			normalVector.w = 1;
+			normalVector.normalize();
 			normalVector.minus();
 		}
 		

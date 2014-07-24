@@ -42,7 +42,7 @@ package test
 		public function Test8_1()
 		{
 			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
-			l.load("tower1.plg",new Vector3d(1,1,1),new Point4d(0,0,0,1));
+			l.load("cube1.plg",new Vector3d(5,5,5),new Point4d(0,0,0,1));
 			cam = new Camera();
 			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,50,500,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
@@ -140,7 +140,10 @@ package test
 			flag = false;
 		}
 		
-		private var light:Light = new Light();
+		private var light_ambient:Light = new Light();
+		private var light_infinite:Light = new Light();
+		private var light_point:Light = new Light();
+		private var light_spot:Light = new Light();
 		private function onComplete(e:Event):void{
 			obj.addVertices(e.target.objectVerticesData);
 			obj.fillPolyVec(e.target.color);
@@ -152,9 +155,12 @@ package test
 			}
 			//			obj.rotationY = 180;
 			world.add(obj);
-			LightManager.addLight(light);
-			light.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,0x00ff00ff,0,0,0,0,0,null,null,0,0,0);
-			
+			LightManager.addLight(light_ambient);
+			light_ambient.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,0x00ff00ff,0,0,0,0,0,null,null,0,0,0);
+			LightManager.addLight(light_infinite);
+			light_infinite.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_INFINITE,0,Util.ARGB(0xff,100,100,100),0,0,0,0,null,new Vector4d(-1,2,-.5,0).normalize(),0,0,0);
+			LightManager.addLight(light_point);
+			light_point.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_POINT,0,0,Util.ARGB(0xff,100,100,100),0.001,0,0,new Point4d(0,100,0),null,0,0,0);
 		}
 		
 		private function onClick(e:MouseEvent):void{

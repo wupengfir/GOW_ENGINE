@@ -15,6 +15,10 @@ package core.util
 			return a<<24|r<<16|g<<8|b;
 		}
 		
+		public static function distance(a:Object,b:Object):Number{
+			return Math.sqrt((b.x-a.x)*(b.x-a.x)+(b.y-a.y)*(b.y-a.y)+(b.z-a.z)*(b.z-a.z));
+		}
+		
 		public function Util()
 		{
 		}

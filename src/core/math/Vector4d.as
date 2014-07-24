@@ -48,12 +48,13 @@ package core.math
 			return this;
 		}
 		
-		public function normalize():void{
+		public function normalize():Vector4d{
 			var l:Number = Math.sqrt(x*x+y*y+z*z);
 			x/=l;
 			y/=l;
 			z/=l;
 			w=1;
+			return this;
 		}
 		
 		public function cross(target:Object,store:Vector4d):void{
