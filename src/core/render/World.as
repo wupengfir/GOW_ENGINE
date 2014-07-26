@@ -1,5 +1,9 @@
 package core.render
 {
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.geom.Point;
+	
 	import core.Constants;
 	import core.geometry.object.Object4d;
 	import core.geometry.poly.Poly4df;
@@ -8,16 +12,13 @@ package core.render
 	import core.math.Point4d;
 	import core.math.Vector4d;
 	import core.util.Util;
-	
-	import flash.display.Graphics;
-	import flash.display.Sprite;
-	import flash.geom.Point;
 
 	public class World extends Sprite
 	{
 		public var renderListArray:Array = new Array();
 		public var objectArray:Array = new Array();
 		
+		private var renderList_all:RenderList4d = new RenderList4d();
 		private var cam:Camera;
 		private var rm:RenderManager = new RenderManager();
 		public function World()
@@ -100,9 +101,39 @@ package core.render
 							b_sum += b_a*b_base*dp/(256*dist*atten);
 						}
 					}else if(light.attr & Light.LIGHTV1_ATTR_SPOTLIGHT_SIMPLE){
-						
+						var dist:Number = Util.distance(light.pos,poly.tvlist[0]);
+						var vec:Vector4d = light.dir;
+						vec.normalize();
+						var dp:Number = vec.x*poly.normalVector.x+vec.y*poly.normalVector.y +vec.z*poly.normalVector.z;
+						var atten:Number = light.kc + light.kl*dist + light.kq*dist*dist;
+						if(dp>0){
+							r_a = light.c_diffuse>>16&0x000000ff;
+							g_a = light.c_diffuse>>8&0x000000ff;
+							b_a = light.c_diffuse&0x000000ff;
+							r_sum += r_a*r_base*dp/(256*dist*atten);
+							g_sum += g_a*g_base*dp/(256*dist*atten);
+							b_sum += b_a*b_base*dp/(256*dist*atten);
+						}
 					}else if(light.attr & Light.LIGHTV1_ATTR_SPOTLIGHT_COMPLICATE){
-						
+						var dist:Number = Util.distance(light.pos,poly.tvlist[0]);
+						var vec:Vector4d = light.dir;
+						vec.normalize();
+						var dp:Number = vec.x*poly.normalVector.x+vec.y*poly.normalVector.y +vec.z*poly.normalVector.z;
+						var atten:Number = light.kc + light.kl*dist + light.kq*dist*dist;
+						if(dp>0){
+							vec = new Vector4d().build(poly.tvlist[0],light.pos);
+							vec.normalize();
+							var dlps:Number = vec.x*poly.normalVector.x+vec.y*poly.normalVector.y +vec.z*poly.normalVector.z;
+							if(dlps>0){
+								r_a = light.c_diffuse>>16&0x000000ff;
+								g_a = light.c_diffuse>>8&0x000000ff;
+								b_a = light.c_diffuse&0x000000ff;
+								r_sum += r_a*r_base*dp*dlps/(256*dist*atten);
+								g_sum += g_a*g_base*dp*dlps/(256*dist*atten);
+								b_sum += b_a*b_base*dp*dlps/(256*dist*atten);
+							}
+							
+						}
 					}
 					
 				}
@@ -110,8 +141,12 @@ package core.render
 			}			
 		}
 		
+		
+		
+		
 		public function render(back:Boolean = false,cull:Boolean = true):void{
-			if(cam == null)return;			
+			if(cam == null)return;		
+			renderList_all.reSet();
 			var g:Graphics = this.graphics;
 			g.clear();
 			var temp:Poly4df;
@@ -172,17 +207,77 @@ package core.render
 						temp.state&Constants.POLY4D_STATE_CLIPPED||
 						temp.state&Constants.POLY4D_STATE_BACKFACE)
 						continue;
-					g.lineStyle(1,0,0);
-					g.beginFill(temp.color_trans, 1);
-					g.moveTo(temp.tvlist[0].x,temp.tvlist[0].y);
-					g.lineTo(temp.tvlist[1].x,temp.tvlist[1].y);
-					g.lineTo(temp.tvlist[2].x,temp.tvlist[2].y);
-					g.lineTo(temp.tvlist[0].x,temp.tvlist[0].y);
-					g.endFill();
+					temp.calculateAvgZ();
+					renderList_all.addPoly(temp);
+//					g.lineStyle(1,0,0);
+//					g.beginFill(temp.color_trans, 1);
+//					g.moveTo(temp.tvlist[0].x,temp.tvlist[0].y);
+//					g.lineTo(temp.tvlist[1].x,temp.tvlist[1].y);
+//					g.lineTo(temp.tvlist[2].x,temp.tvlist[2].y);
+//					g.lineTo(temp.tvlist[0].x,temp.tvlist[0].y);
+//					g.endFill();
+				}
+				
+			}
+			sort(0,renderList_all.num_polys-1);
+			//sort_n();
+			for (var i:int = 0; i < renderList_all.num_polys; i++) 
+			{
+				
+				temp = renderList_all.poly_vec[i];
+				g.lineStyle(1,0,0);
+				g.beginFill(temp.color_trans, 1);
+				g.moveTo(temp.tvlist[0].x,temp.tvlist[0].y);
+				g.lineTo(temp.tvlist[1].x,temp.tvlist[1].y);
+				g.lineTo(temp.tvlist[2].x,temp.tvlist[2].y);
+				g.lineTo(temp.tvlist[0].x,temp.tvlist[0].y);
+				g.endFill();
+				
+			}
+		}
+		
+		public function sort_n():void{
+			var temp:int;
+			var tempP:Poly4df;
+			for (var i:int = 0; i < renderList_all.num_polys; i++) 
+			{
+				temp = i;
+				for (var j:int = i; j < renderList_all.num_polys; j++) 
+				{
+					if( renderList_all.poly_vec[temp].avg_z < renderList_all.poly_vec[j].avg_z){
+						tempP = renderList_all.poly_vec[temp];
+						renderList_all.poly_vec[temp] = renderList_all.poly_vec[j];
+						renderList_all.poly_vec[j] = tempP;
+					}
 				}
 				
 			}
 			
+		}
+		
+		public function sort(l:int,r:int):void{
+			if(l<r){
+				var i:int = l;
+				var j:int = r;
+				var temp:Poly4df = renderList_all.poly_vec[l];
+				while(i<j){
+					while(i<j && renderList_all.poly_vec[j].avg_z <= temp.avg_z){
+						j--;
+					}
+					if(i<j){
+						renderList_all.poly_vec[i++] = renderList_all.poly_vec[j];
+					}
+					while(i<j && renderList_all.poly_vec[i].avg_z > temp.avg_z){
+						i++;
+					}
+					if(i<j){
+						renderList_all.poly_vec[j--] = renderList_all.poly_vec[i];
+					}
+				}
+				renderList_all.poly_vec[i] = temp;
+				sort(l,i-1);
+				sort(i+1,r);
+			}			
 		}
 		
 	}

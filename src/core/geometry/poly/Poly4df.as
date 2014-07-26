@@ -10,6 +10,7 @@ package core.geometry.poly
 		public var attr:int;
 		public var color:uint;
 		public var color_trans:uint;
+		public var avg_z:Number = 0;
 		public var vlist:Vector.<Point4d> = new Vector.<Point4d>(3);
 		public var tvlist:Vector.<Point4d> = new Vector.<Point4d>(3);
 		public var normalVector:Vector4d = new Vector4d();
@@ -31,6 +32,10 @@ package core.geometry.poly
 			tvlist[1] = p2;
 			vlist[2] = new Point4d().copyFromPoint4d(p3);
 			tvlist[2] = p3;
+		}
+		
+		public function calculateAvgZ():void{
+			avg_z = (tvlist[0].z+tvlist[1].z+tvlist[2].z)/3;
 		}
 		
 		public function avaliable():Boolean{

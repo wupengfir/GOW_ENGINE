@@ -29,6 +29,10 @@ package core.render
 			}
 		}
 		
+		public function reSet():void{
+			num_polys = 0;
+		}
+		
 		public function toWorldPosition(world_pos:Point4d,coord_select:int = 2):void{
 			var temp:Poly4df;
 			if(coord_select == Constants.TRANSFORM_LOCAL_TO_TRANS){				
