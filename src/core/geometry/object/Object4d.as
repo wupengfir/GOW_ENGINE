@@ -33,6 +33,8 @@ package core.geometry.object
 		//变换后的顶点坐标
 		public var vlist_trans:Vector.<Point4d> = new Vector.<Point4d>(Constants.OBJECT4D_MAX_VERTICES,true);
 		
+		public var poly_point_match_data:Array = new Array();
+		
 		private var rm:RenderManager = new RenderManager();
 		public var numPolys:int;
 		public var poly_vec:Vector.<Poly4df> = new Vector.<Poly4df>(Constants.RENDERLISTD_MAX_POLYS,true);
@@ -80,39 +82,23 @@ package core.geometry.object
 			
 		}
 		
-		public function fillPolyVec(colors:Array = null,type:int = 1):void{
+		public function fillPolyVec(colors:Array = null):void{
 			var vertice:Point4d;
 			var index:int = 0;
 			this.colorList = colors;
-			if(type == Constants.TRANSFORM_TRANS_ONLY){
-				for (var i:int = 0; i < numVertices; i+=3) 
-				{
-					var tempPoly:Poly4df = new Poly4df();
-					if(colors){
-						tempPoly.color = colors[Math.floor(i/3)];
-						tempPoly.color_trans = colors[Math.floor(i/3)];
-					}
-					
-					tempPoly.addPoint(vlist_trans[i],vlist_trans[i+1],vlist_trans[i+2]);
-					poly_vec[index] = tempPoly;
-					index++;
-					numPolys++;
+			for (var i:int = 0; i < numVertices; i+=3) 
+			{
+				var tempPoly:Poly4df = new Poly4df();
+				if(colors){
+					tempPoly.color = colors[Math.floor(i/3)];
+					tempPoly.color_trans = colors[Math.floor(i/3)];
 				}
-			}else{
-				for (var i:int = 0; i < numVertices; i+=3) 
-				{
-					var tempPoly:Poly4df = new Poly4df();
-					if(colors){
-						tempPoly.color = colors[Math.floor(i/3)];
-						tempPoly.color_trans = colors[Math.floor(i/3)];
-					}
-					tempPoly.addPoint(vlist_local[i],vlist_local[i+1],vlist_local[i+2]);
-					poly_vec[index] = tempPoly;
-					index++;
-					numPolys++;
-				}
-			}
-						
+				
+				tempPoly.addPoint(vlist_trans[i],vlist_trans[i+1],vlist_trans[i+2]);
+				poly_vec[index] = tempPoly;
+				index++;
+				numPolys++;
+			}						
 		}
 		
 		public function toWorldPosition(coord_select:int = 2):void{
@@ -134,6 +120,19 @@ package core.geometry.object
 				}			
 		}
 		
+//		public function cloneObject4d(source:Object4d):Object4d{
+//			for (var i:int = 0; i < source.numVertices; i++) 
+//			{
+//				vlist_local[i] = new Point4d().copyFromPoint4d(source.vlist_local[i]);
+//				vlist_trans[i] = new Point4d().copyFromPoint4d(source.vlist_trans[i]);
+//				numVertices++;
+//			}
+//			this.avgRadius = source.maxRadius;
+//			this.maxRadius = source.maxRadius;
+//			fillPolyVec(source.colorList);
+//			return this;
+//		}
+		
 		public function copyFromObject4d(source:Object4d):Object4d{
 			for (var i:int = 0; i < source.numVertices; i++) 
 			{
@@ -141,7 +140,7 @@ package core.geometry.object
 				vlist_trans[i] = new Point4d().copyFromPoint4d(source.vlist_trans[i]);
 				numVertices++;
 			}
-			this.avgRadius = source.maxRadius;
+			this.avgRadius = source.avgRadius;
 			this.maxRadius = source.maxRadius;
 			fillPolyVec(source.colorList);
 			return this;

@@ -8,10 +8,10 @@ package core.util
 		}
 		
 		public static function ARGB(a:uint,r:uint,g:uint,b:uint):uint{
-			a = a<0?0:a;a = a>255?255:a;
-			r = r<0?0:r;r = r>255?255:r;
-			g = g<0?0:g;g = g>255?255:g;
-			b = b<0?0:b;b = b>255?255:b;
+			a = a<0?0:a;a = a>254?254:a;
+			r = r<0?0:r;r = r>254?254:r;
+			g = g<0?0:g;g = g>254?254:g;
+			b = b<0?0:b;b = b>254?254:b;
 			return a<<24|r<<16|g<<8|b;
 		}
 		

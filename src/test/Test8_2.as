@@ -1,18 +1,14 @@
 package test
 {
-	import flash.display.Graphics;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	
 	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.object.Object4d;
+	import core.geometry.object.Object4d_v2;
 	import core.geometry.poly.Poly4d;
 	import core.geometry.poly.Poly4df;
 	import core.light.Light;
 	import core.light.LightManager;
+	import core.load.MaxAscLoader;
 	import core.load.PLG_Loader;
 	import core.math.Point4d;
 	import core.math.Vector3d;
@@ -23,13 +19,19 @@ package test
 	import core.render.World;
 	import core.util.Util;
 	
-	public class Test8_1 extends Sprite
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	
+	public class Test8_2 extends Sprite
 	{
 		public var cam_pos:Point4d = new Point4d(0,0,-100,1);
 		public var cam_dir:Vector4d = new Vector4d(0,0,0,1);
 		public var cam:Camera;
 		public var renderList:RenderList4d = new RenderList4d();
-		public var obj:Object4d = new Object4d();
+		public var obj:Object4d_v2 = new Object4d_v2();
 		public var poly:Poly4df;
 		public var poly_pos:Point4d = new Point4d(0,-100,300,1);
 		public var copy:Point4d = new Point4d(0,-100,300,1);
@@ -39,10 +41,10 @@ package test
 		public var rm:RenderManager = new RenderManager();
 		
 		private var world:World = new World();
-		public function Test8_1()
+		public function Test8_2()
 		{
-			var l:PLG_Loader = new PLG_Loader(PLG_Loader.TYPE_OBJECT);
-			l.load("cube1.plg",new Vector3d(2,2,2),new Point4d(0,0,0,1));
+			var l:MaxAscLoader = new MaxAscLoader();
+			l.load("car01.asc",new Vector3d(30,30,30),new Point4d(0,0,0,1));
 			cam = new Camera();
 			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,50,500,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
@@ -145,28 +147,34 @@ package test
 		private var light_point:Light = new Light();
 		private var light_spot:Light = new Light();
 		private function onComplete(e:Event):void{
-			obj.addVertices(e.target.objectVerticesData);
-			obj.fillPolyVec(e.target.color);
-			for (var i:int = 0; i < 10; i++) 
+			obj = e.currentTarget.object;
+			obj.worldPosition = poly_pos;
+			//world.add(obj);
+			for (var i:int = 0; i < 1; i++) 
 			{
-				var o:Object4d = new Object4d().copyFromObject4d(obj);
+				var o:Object4d_v2 = new Object4d_v2().copyFromObject4d_v2(obj);
 				o.worldPosition = new Point4d((i%5)*200,0,(int(i/5))*200+100,1);
 				world.add(o);
 			}
-			world.add(obj);
-//			LightManager.addLight(light_ambient);
-//			light_ambient.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,0x00ff00ff,0,0,0,0,0,null,null,0,0,0);
+			
+			LightManager.addLight(light_ambient);
+			light_ambient.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,Util.ARGB(0xff,100,100,100),0,0,0,0,0,null,null,0,0,0);
 			LightManager.addLight(light_infinite);
-			light_infinite.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_INFINITE,0,Util.ARGB(0xff,100,100,100),0,0,0,0,null,new Vector4d(-1,2,-.5,0).normalize(),0,0,0);
+			light_infinite.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_INFINITE,0,Util.ARGB(0xff,100,100,200),0,0,0,0,null,new Vector4d(-1,2,-.5,0).normalize(),0,0,0);
 			LightManager.addLight(light_point);
 			light_point.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_POINT,0,0,Util.ARGB(0xff,100,100,100),0.001,0,0,new Point4d(0,100,0),null,0,0,0);
 			LightManager.addLight(light_spot);
 			light_spot.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_SPOTLIGHT_COMPLICATE,0,Util.ARGB(0xff,100,100,100),0,0.001,0,0,new Point4d(0,100,0),new Vector4d(-1,1,-.5,0),0,0,0);
-
+			
 		}
 		
 		private function onClick(e:MouseEvent):void{
-			obj.rotationY = 180;
+			for (var i:int = 0; i < world.objectArray.length; i++) 
+			{
+				var o:Object4d = world.objectArray[i] as Object4d;
+				o.rotationX = -90;
+			}
+			
 		}
 		
 		private var turning:int = 0;

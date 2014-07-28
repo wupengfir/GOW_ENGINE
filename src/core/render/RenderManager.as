@@ -146,7 +146,7 @@ package core.render
 			}
 		}
 		
-		public function transform_object4d(obj:Object4d,matrix:GowMatrix,coord_select:int,transform_basis:Boolean):void{
+		public function transform_object4d(obj:Object,matrix:GowMatrix,coord_select:int,transform_basis:Boolean):void{
 			var temp:Point4d;
 			var result:GowMatrix
 			switch(coord_select){

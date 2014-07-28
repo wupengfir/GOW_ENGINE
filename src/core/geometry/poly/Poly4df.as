@@ -8,7 +8,7 @@ package core.geometry.poly
 	{
 		public var state:int;
 		public var attr:int;
-		public var color:uint;
+		public var color:uint = 0xffffff;
 		public var color_trans:uint;
 		public var avg_z:Number = 0;
 		public var vlist:Vector.<Point4d> = new Vector.<Point4d>(3);
@@ -62,7 +62,7 @@ package core.geometry.poly
 			normalVector.z = u.x*v.y-v.x*u.y;
 			normalVector.w = 1;
 			normalVector.normalize();
-			normalVector.minus();
+			//normalVector.minus();
 		}
 		
 	}

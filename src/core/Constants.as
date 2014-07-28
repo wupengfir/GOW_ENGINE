@@ -2,7 +2,7 @@ package core
 {
 	public class Constants
 	{
-		public static const RENDERLISTD_MAX_POLYS:int = 1024;
+		public static const RENDERLISTD_MAX_POLYS:int = 10240;
 		public static const OBJECT4D_MAX_VERTICES:int = 1024;
 		
 		public static const POLY4D_ATTR_2SIDES:int = 0x0001;
