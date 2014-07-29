@@ -197,6 +197,7 @@ package core.render
 			var viewVector:Vector4d = new Vector4d();
 			for (var i:int = 0; i < obj.numPolys; i++) 
 			{
+				if(obj.poly_vec[i].attr&Constants.POLY4D_ATTR_2SIDES)continue;
 				viewVector.x = pos.x - obj.poly_vec[i].tvlist[0].x;
 				viewVector.y = pos.y - obj.poly_vec[i].tvlist[0].y;
 				viewVector.z = pos.z - obj.poly_vec[i].tvlist[0].z;

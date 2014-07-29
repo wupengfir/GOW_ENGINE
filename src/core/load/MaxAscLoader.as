@@ -2,6 +2,7 @@ package core.load
 {
 	import core.geometry.object.Object4d_v2;
 	import core.geometry.poly.Poly4df;
+	import core.geometry.vertex.Vertex;
 	import core.math.Point3d;
 	import core.math.Point4d;
 	
@@ -34,7 +35,8 @@ package core.load
 						var x:Number = Number(attribute[2].split(":")[1]*scale.x);
 						var y:Number = Number(attribute[3].split(":")[1]*scale.y);
 						var z:Number = Number(attribute[4].split(":")[1]*scale.z);
-						objectVerticesData.push(new Point4d(x,y,z));
+						var vertex:Vertex = new Vertex(x,y,z);
+						objectVerticesData.push(vertex);
 					}
 				}
 				if(info.indexOf("Face") == 0){

@@ -34,6 +34,12 @@ package core.math
 			this.z = -z;
 		}
 		
+		public function add(obj:Object):void{
+			this.x += obj.x;
+			this.y += obj.y;
+			this.z += obj.z;
+		}
+		
 		public function setProperty(x:Number = 0,y:Number = 0,z:Number = 0,w:Number = 0):void{
 			this.x = x;
 			this.y = y;

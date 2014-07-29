@@ -9,7 +9,7 @@ package test
 	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.object.Object4d;
-	import core.geometry.poly.Poly4d;
+	import core.geometry.poly.Poly;
 	import core.geometry.poly.Poly4df;
 	import core.light.Light;
 	import core.light.LightManager;

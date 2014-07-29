@@ -21,11 +21,14 @@ package core.util
 			return Math.sqrt((b.x-a.x)*(b.x-a.x)+(b.y-a.y)*(b.y-a.y)+(b.z-a.z)*(b.z-a.z));
 		}
 		
+		private static var temp:Number = 0;
+		private static var x:Number = 0;
+		private static var y:Number = 0;
+		private static var z:Number = 0;
 		public static function fast_distance(a:Object,b:Object):Number{
-			var temp:Number;
-			var x:Number = Math.abs(b.x - a.x)<<10;
-			var y:Number = Math.abs(b.y - a.y)<<10;
-			var z:Number = Math.abs(b.z - a.z)<<10;
+			x = Math.abs(b.x - a.x)<<10;
+			y = Math.abs(b.y - a.y)<<10;
+			z = Math.abs(b.z - a.z)<<10;
 			if(y < x){temp = y;y=x;x=temp;}
 			if(z < y){temp = y;y=z;z=temp;}
 			if(y < x){temp = y;y=x;x=temp;}

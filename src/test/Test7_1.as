@@ -2,7 +2,7 @@ package test
 {
 	import core.Constants;
 	import core.geometry.matrix.GowMatrix;
-	import core.geometry.poly.Poly4d;
+	import core.geometry.poly.Poly;
 	import core.geometry.poly.Poly4df;
 	import core.load.PLG_Loader;
 	import core.math.Point4d;

@@ -4,7 +4,7 @@ package test
 	import core.geometry.matrix.GowMatrix;
 	import core.geometry.object.Object4d;
 	import core.geometry.object.Object4d_v2;
-	import core.geometry.poly.Poly4d;
+	import core.geometry.poly.Poly;
 	import core.geometry.poly.Poly4df;
 	import core.light.Light;
 	import core.light.LightManager;
@@ -46,7 +46,7 @@ package test
 			var l:MaxAscLoader = new MaxAscLoader();
 			l.load("car01.asc",new Vector3d(30,30,30),new Point4d(0,0,0,1));
 			cam = new Camera();
-			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,50,500,90,950,650);			
+			cam.initCamera(Camera.CAMERA_TYPE_EULER,cam_pos,cam_dir,null,100,1000,90,950,650);			
 			l.addEventListener(PLG_Loader.LOAD_COMPLETE,onComplete);
 			addEventListener(Event.ADDED_TO_STAGE,function(e:Event):void{
 				addEventListener(Event.ENTER_FRAME,onEnter);
@@ -157,14 +157,14 @@ package test
 				world.add(o);
 			}
 			
-			LightManager.addLight(light_ambient);
-			light_ambient.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,Util.ARGB(0xff,100,100,100),0,0,0,0,0,null,null,0,0,0);
+//			LightManager.addLight(light_ambient);
+//			light_ambient.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_AMBIENT,Util.ARGB(0xff,100,100,100),0,0,0,0,0,null,null,0,0,0);
 			LightManager.addLight(light_infinite);
 			light_infinite.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_INFINITE,0,Util.ARGB(0xff,100,100,200),0,0,0,0,null,new Vector4d(-1,2,-.5,0).normalize(),0,0,0);
 			LightManager.addLight(light_point);
-			light_point.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_POINT,0,0,Util.ARGB(0xff,100,100,100),0.001,0,0,new Point4d(0,100,0),null,0,0,0);
-			LightManager.addLight(light_spot);
-			light_spot.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_SPOTLIGHT_COMPLICATE,0,Util.ARGB(0xff,100,100,100),0,0.001,0,0,new Point4d(0,100,0),new Vector4d(-1,1,-.5,0),0,0,0);
+			light_point.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_POINT,0,0,Util.ARGB(0xff,100,100,100),0.001,0,0,new Point4d(0,1000,0),null,0,0,0);
+//			LightManager.addLight(light_spot);
+//			light_spot.init(Light.LIGHTV1_STATE_ON,Light.LIGHTV1_ATTR_SPOTLIGHT_COMPLICATE,0,Util.ARGB(0xff,100,100,100),0,0.001,0,0,new Point4d(0,100,0),new Vector4d(-1,1,-.5,0),0,0,0);
 			
 		}
 		

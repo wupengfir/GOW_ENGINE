@@ -94,7 +94,7 @@ package core.geometry.object
 					tempPoly.color_trans = colors[Math.floor(i/3)];
 				}
 				
-				tempPoly.addPoint(vlist_trans[i],vlist_trans[i+1],vlist_trans[i+2]);
+				tempPoly.addPoint(this,i,i+1,i+2);
 				poly_vec[index] = tempPoly;
 				index++;
 				numPolys++;

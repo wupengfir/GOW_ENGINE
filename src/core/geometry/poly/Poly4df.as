@@ -1,6 +1,7 @@
 package core.geometry.poly
 {
 	import core.Constants;
+	import core.geometry.object.Object4d;
 	import core.math.Point4d;
 	import core.math.Vector4d;
 
@@ -25,13 +26,17 @@ package core.geometry.poly
 			state = Constants.POLY4D_STATE_ACTIVE;
 		}
 		
-		public function addPoint(p1:Point4d,p2:Point4d,p3:Point4d):void{
-			vlist[0] = new Point4d().copyFromPoint4d(p1);
-			tvlist[0] = p1;
-			vlist[1] = new Point4d().copyFromPoint4d(p2);
-			tvlist[1] = p2;
-			vlist[2] = new Point4d().copyFromPoint4d(p3);
-			tvlist[2] = p3;
+		public function addPoint(obj:Object4d,p1:int,p2:int,p3:int):void{
+			vlist[0] = obj.vlist_local[p1];
+			tvlist[0] = obj.vlist_trans[p1];
+			vlist[1] = obj.vlist_local[p2];
+			tvlist[1] = obj.vlist_trans[p2];
+			vlist[2] = obj.vlist_local[p3];
+			tvlist[2] = obj.vlist_trans[p3];
+		}
+		
+		public function reSetPoint():void{
+			
 		}
 		
 		public function calculateAvgZ():void{
@@ -46,16 +51,29 @@ package core.geometry.poly
 			return true;
 		}
 		
-		public function calculateNormalVector():void{
+		public function calculateOriginNormalVector():void{
 			var x1:Number = tvlist[1].x-tvlist[0].x;
 			var y1:Number = tvlist[1].y-tvlist[0].y;
 			var z1:Number = tvlist[1].z-tvlist[0].z;
-			//var w1:Number = Math.sqrt(x1*x1+y1*y1+z1*z1);
 			var u:Vector4d = new Vector4d(x1,y1,z1,1);
 			var x2:Number = tvlist[2].x-tvlist[0].x;
 			var y2:Number = tvlist[2].y-tvlist[0].y;
 			var z2:Number = tvlist[2].z-tvlist[0].z;
-			//var w2:Number = Math.sqrt(x2*x2+y2*y2+z2*z2);;
+			var v:Vector4d = new Vector4d(x2,y2,z2,1);
+			normalVector.x = u.y*v.z-v.y*u.z;
+			normalVector.y = u.z*v.x-u.x*v.z;
+			normalVector.z = u.x*v.y-v.x*u.y;
+			normalVector.w = 1;
+		}
+		
+		public function calculateNormalVector():void{
+			var x1:Number = tvlist[1].x-tvlist[0].x;
+			var y1:Number = tvlist[1].y-tvlist[0].y;
+			var z1:Number = tvlist[1].z-tvlist[0].z;
+			var u:Vector4d = new Vector4d(x1,y1,z1,1);
+			var x2:Number = tvlist[2].x-tvlist[0].x;
+			var y2:Number = tvlist[2].y-tvlist[0].y;
+			var z2:Number = tvlist[2].z-tvlist[0].z;
 			var v:Vector4d = new Vector4d(x2,y2,z2,1);
 			normalVector.x = u.y*v.z-v.y*u.z;
 			normalVector.y = u.z*v.x-u.x*v.z;
