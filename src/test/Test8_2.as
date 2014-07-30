@@ -273,7 +273,7 @@ package test
 			//			obj.rotation_world = true;
 			//			obj.ry_world = cam.dir.y*180/Math.PI;
 			
-			
+			if(moveback||movedown||movefront||moveleft||moveright||moveup||turnleft||turnright)
 			world.render(true);
 		}
 		

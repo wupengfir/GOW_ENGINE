@@ -5,10 +5,12 @@ package
 	import core.load.ModelLoader;
 	import core.load.PLG_Loader;
 	import core.math.Vector4d;
+	import core.render.BitmapdataRender;
 	import core.util.Util;
 	
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
 	import monitor.MonitorKit;
@@ -26,13 +28,29 @@ package
 		private var i:Number = 5;
 		private var dic:Array = new Array();
 		private var iiii:int;
+		private var screen:BitmapdataRender;// = new BitmapdataRender()
 		public function GOW_ENGINE()
 		{
 			stage.frameRate = 60;
 			addChild(new Test8_2);
 			var monitor:MonitorKit = new MonitorKit(MonitorKit.MKMODE_T);
-			addChild(monitor);
+			stage.addChild(monitor);
 			
+//			screen = new BitmapdataRender(stage.fullScreenWidth,stage.fullScreenHeight);
+//			addChild(screen);
+//			screen.moveTo(10,20);
+//			screen.lineTo_v2(50,220);
+//			screen.lineTo_v2(180,260);
+//			screen.screen.alpha = .5;
+//			screen.graphics.lineStyle(0,1);
+//			screen.graphics.moveTo(110,20);
+//			screen.graphics.lineTo(150,220);
+//			screen.graphics.lineTo(280,260);
+//			addEventListener(Event.ENTER_FRAME,function(e:Event):void{
+//				screen.line_color = (0xff<<24)|Math.random()*0xffffff;		
+//				screen.moveTo(Math.random()*screen.canva.width,Math.random()*screen.canva.height);
+//				screen.lineTo(Math.random()*screen.canva.width,Math.random()*screen.canva.height);
+//			});
 		}
 		
 		public function ii(arr:Array):Vector.<Number>{
